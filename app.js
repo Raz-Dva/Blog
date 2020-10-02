@@ -123,9 +123,9 @@ app.get('/single-post/:id', (req, res, next) => {
         });
     });
 });
-////////////Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
 
-//----------------  add post
+
+//----------------  add new post
 app.get('/add-post', (req, res) => {
     res.sendFile(`${clientPath}\\/add-post/add-post.html`)
 });
@@ -165,7 +165,66 @@ app.post('/add-post', (req, res) => {
         });
     })
 });
-//---------------- error 404
+
+//---------------- update post
+app.get('/update-post/:id', (req, res) => {
+    fs.readFile(`${clientPath}\\/update-post/update-post.html`, "utf8", (error, data) => {
+        if (error) {
+            console.log("Error read file index " + error) // обработать ошибку
+        }
+        Articles.findById(req.params.id, (err, result) => {
+            if (err) {
+                console.log(err.stack)
+                next(err);
+            };
+            let imgResult = result.img.data.toString('base64');
+            data = data
+                .replace('{id}', ObjectID(req.params.id))
+                .replace('{post_author}', result.author)
+                .replace('{post_title}', result.title)
+                .replace('{post_imgType}', result.img.contentType)
+                .replace('{post_img}', imgResult)
+                .replace('{post_date}', formatDate(result.date))
+                .replace('{post_tags}', result.categories.join())
+                .replace('{post_text}', result.text);
+            res.status(200).type('text/html');
+            res.send(data);
+        });
+    });
+});
+app.post('/update-post/:id', (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            console.log(err.stack)
+            next(err);
+        }
+        var finalImg, updatePost;
+        var reqBody = {
+            author: req.body.authorPost,
+            title: req.body.titlePost,
+            text: req.body.textPost,
+            date: req.body.datePost,
+            categories: JSON.parse(req.body.tagsPost)
+        };
+        if (req.file == undefined || req.file == true) {
+            updatePost = reqBody;
+        } else {
+            var buffer = req.file.buffer;
+            finalImg = {
+                data: buffer,
+                contentType: req.file.mimetype
+            };
+            updatePost = reqBody;
+            updatePost.img = finalImg;
+        }
+        Articles.updateOne({ _id: ObjectID(req.params.id) }, updatePost, function (err, result) {
+            if (err) return console.log('error line:254 ' + err);
+            console.log("Update succsses Article");
+            res.send('Post edited successfully')
+        });
+    })
+});
+//---------------- error and 404
 
 app.use((err, req, res, next) => {
     const isNotFound = ~err.message.indexOf('not found')
