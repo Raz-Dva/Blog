@@ -43,7 +43,7 @@ app.get('/articles', (req, res) => {
     });
 });
 
-//----------------page categoris:id
+//----------------page categories:id
 app.get('/categories/:id', (req, res) => {
     fs.readFile(`${clientPath}\\/categories/categories.html`, "utf8", (error, data) => {
         if (error) {
@@ -121,37 +121,52 @@ app.get('/single-post/:id', (req, res, next) => {
                 res.send(data);
             }
         });
-        // Articles.findOne({_id:new ObjectID(req.params.id)}, (err, result) => {
-        //     if (err ) {
-        //         console.log( 'ZZZZZ')
-
-        //          return res.status(400).json({ error: 'err.message' });
-        //     };
-        //     let imgResult = result.img.data.toString('base64');
-        //     let imageBase64 = `data:${result.img.contentType};base64, ${imgResult} `;
-        //     data = data
-        //         .replace('{post_text}', result.text)
-        //         .replace('{date}', formatDate(result.date))
-        //         .replace('{title}', result.title)
-        //         .replace('{author}', result.author)
-        //         .replace('{tags}', result.categories.join("/"))
-        //         .replace('{image}', imageBase64);
-        //     res.status(200).type('text/html');
-        //     res.send(data);
-        // });
     });
 });
 ////////////Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
 
-//---------------- get add post
+//----------------  add post
 app.get('/add-post', (req, res) => {
     res.sendFile(`${clientPath}\\/add-post/add-post.html`)
-})
+});
+
+app.post('/add-post', (req, res) => {
+    upload(req, res, function (err) {
+        if (err) {
+            console.log(err + 'add post upload err str 158')
+        }
+        var bodyImg, buffer, fileType;
+        if (req.file) {
+            buffer = req.file.buffer;
+            fileType = req.file.mimetype;
+        } else {
+            var readFileimg = fs.readFileSync('./public/img/blog-img/no-image.jpg');
+            buffer = Buffer.from(readFileimg);
+            fileType = 'image/jpeg';
+        }
+        bodyImg = {
+            data: buffer,
+            contentType: fileType
+        };
+        console.log(req.body.tagsPost)
+        var newPost = {
+            author: req.body.authorPost,
+            title: req.body.titlePost,
+            text: req.body.textPost,
+            date: req.body.datePost,
+            img: bodyImg,
+            categories: JSON.parse(req.body.tagsPost)
+        };
+        const newArticle = new Articles(newPost);
+        newArticle.save(function (err) {
+            if (err) return console.log('Save error line:100 ' + err);
+            console.log("Сохранен объект newArticle");
+            res.send('Post added successfully')
+        });
+    })
+});
 //---------------- error 404
-// app.use((err, req, res, next) => {
-//     console.log(err.stack);
-//     // res.status(500).json({ error: err.stack })
-// });
+
 app.use((err, req, res, next) => {
     const isNotFound = ~err.message.indexOf('not found')
     const isCastError = ~err.message.indexOf('Cast to ObjectId failed')
@@ -162,10 +177,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: err.stack })
 })
 
-// app.use((req, res) => {
-//     // res.sendStatus(404);
-//     res.send('<h1>NO FOUND</h1>');
-// })
 app.get('*', function (req, res) {
     res.status(404).type('text/html');
     res.send("<h1> Not found 404</h1>");

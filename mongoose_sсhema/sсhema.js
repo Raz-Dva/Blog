@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const articleScheme = new Schema({
-    // _id: String,
     author: {
         type: String,
         reuqire: true
