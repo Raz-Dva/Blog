@@ -5,21 +5,20 @@ const http = require('http'),
     app = express(),
     server = http.createServer(app),
     mongoose = require('mongoose'),
-    bodyParser = require('body-parser'),
+    // bodyParser = require('body-parser'),
     fs = require('fs'),
     multer = require("multer"),
-    // ObjectID = require('mongodb').ObjectID,
     formatDate = require('./assets/formatDate'),
     Articles = require('./mongoose_sсhema/sсhema'),
     clientPath = __dirname + "\\templates",
     port = 5000,
-    path = require('path'),
+    // path = require('path'),
     url = "mongodb://localhost:27017/",
     // ------------  multer upload  --------
     upload = multer({
         storage: multer.memoryStorage()
     }).single('imgPost');
-////////////////////////
+//---------------- express static
 app.use(express.static(__dirname + "/templates"));
 app.use('/public/css', express.static('public/css'));
 app.use('/public/fonts', express.static('public/fonts/'));
