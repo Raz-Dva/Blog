@@ -13,8 +13,12 @@ $(document).ready(function () {
       });
     }
     static remove(id) {
-      return fetch(`${BASEURL}/${id}`, { method: "delete" })
-        .then((res) => { return res.json() }
+      return fetch(`delete/${id}`, { method: "delete" })
+        .then((res) => { 
+          if (!res.ok) {            
+            return  alert(res.statusText)
+        }          
+          return res.json() }
         )
     }
   };
@@ -55,7 +59,6 @@ $(document).ready(function () {
           if (question) {
             const postId = $(this).attr("data-id");
             ArtApi.remove(postId).then((post) => {
-              ///////////////// if error 
               articles = articles.filter(function (item) {
                 if (item._id !== post._id) {
                   renderClass.getCategories(item);

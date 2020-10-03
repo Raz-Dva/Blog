@@ -8,7 +8,7 @@ const http = require('http'),
     bodyParser = require('body-parser'),
     fs = require('fs'),
     multer = require("multer"),
-    ObjectID = require('mongodb').ObjectID,
+    // ObjectID = require('mongodb').ObjectID,
     formatDate = require('./assets/formatDate'),
     Articles = require('./mongoose_sсhema/sсhema'),
     clientPath = __dirname + "\\templates",
@@ -33,27 +33,28 @@ app.use('/templates', express.static('templates'));
 
 // ------------  route --------
 //-------------- find all from mongoose schema
-app.get('/articles', (req, res) => {
+app.get('/articles', (req, res, next) => {
     Articles.find({}, function (err, result) {
         if (err) {
-            console.log('Error find all from mongoose schema' + err);
-            return res.sendStatus(500);
+            console.log(err.stack)
+            next(err);
         };
         res.status(200).json(result)
     });
 });
 
 //----------------page categories:id
-app.get('/categories/:id', (req, res) => {
+app.get('/categories/:id', (req, res, next) => {
     fs.readFile(`${clientPath}\\/categories/categories.html`, "utf8", (error, data) => {
         if (error) {
-            console.log("Error read file categories.html " + error)
+            console.log("Error read file categories.html " + error);
+            return res.status(400).type('text/html').send('<h1>Error read file  categories.html</h1>');
         };
         let tag = (req.params.id).substring(1);
         Articles.find({ categories: { $all: [tag] } }, (err, result) => {
             if (err) {
-                console.log('Error find categories ' + err);
-                return false;
+                console.log(err.stack)
+                next(err);
             };
             if (result.length > 0) {
                 let cardPost = result.map((post) => {
@@ -82,26 +83,28 @@ app.get('/categories/:id', (req, res) => {
                                 </div>
                             </div>`
                 }).join(' ');
-                data = data
-                    .replace('{list_posts}', cardPost)
-                    .replace('{categoria}', tag);
 
+                data = data
+                    .replace('{categoria}', tag)
+                    .replace('{list_posts}', cardPost);
                 res.status(200).type('text/html');
                 res.send(data);
             } else {
-                data = data.replace('{list_posts}', '<h2> No posts </h2>')
+                data = data
+                .replace('{categoria}', tag)
+                .replace('{list_posts}', '<h2> No posts </h2>');
+                res.status(200).type('text/html');
                 res.send(data);
             }
         })
     });
 });
-
 //---------------- single post :id
 app.get('/single-post/:id', (req, res, next) => {
     fs.readFile(`${clientPath}\\single-post.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file single-post.html " + error);
-            return res.status(400).json({ error: error.message });
+            return res.status(400).type('text/html').send('<h1>Error read file single-post.html</h1>');
         }
         Articles.findById(req.params.id, function (err, result) {
             if (err) {
@@ -123,17 +126,15 @@ app.get('/single-post/:id', (req, res, next) => {
         });
     });
 });
-
-
 //----------------  add new post
 app.get('/add-post', (req, res) => {
     res.sendFile(`${clientPath}\\/add-post/add-post.html`)
 });
-
-app.post('/add-post', (req, res) => {
-    upload(req, res, function (err) {
-        if (err) {
-            console.log(err + 'add post upload err str 158')
+app.post('/add-post', (req, res, next) => {
+    upload(req, res, function (error) {
+        if (error) {
+            console.log(err.stack);
+            next(err);
         }
         var bodyImg, buffer, fileType;
         if (req.file) {
@@ -159,18 +160,22 @@ app.post('/add-post', (req, res) => {
         };
         const newArticle = new Articles(newPost);
         newArticle.save(function (err) {
-            if (err) return console.log('Save error line:100 ' + err);
-            console.log("Сохранен объект newArticle");
+            if (err) {
+                return console.log('newArticle save error' + err);
+                next(err)
+            }
+            console.log("Object saved as 'newArticle'");
             res.send('Post added successfully')
         });
     })
 });
 
 //---------------- update post
-app.get('/update-post/:id', (req, res) => {
+app.get('/update-post/:id', (req, res, next) => {
     fs.readFile(`${clientPath}\\/update-post/update-post.html`, "utf8", (error, data) => {
         if (error) {
-            console.log("Error read file index " + error) // обработать ошибку
+            console.log("Error read file update-post.html " + error);
+            return res.status(400).type('text/html').send('<h1>Error read file update-postaf.html</h1>');
         }
         Articles.findById(req.params.id, (err, result) => {
             if (err) {
@@ -179,7 +184,7 @@ app.get('/update-post/:id', (req, res) => {
             };
             let imgResult = result.img.data.toString('base64');
             data = data
-                .replace('{id}', ObjectID(req.params.id))
+                .replace('{id}', req.params.id)
                 .replace('{post_author}', result.author)
                 .replace('{post_title}', result.title)
                 .replace('{post_imgType}', result.img.contentType)
@@ -217,23 +222,38 @@ app.post('/update-post/:id', (req, res) => {
             updatePost = reqBody;
             updatePost.img = finalImg;
         }
-        Articles.updateOne({ _id: ObjectID(req.params.id) }, updatePost, function (err, result) {
-            if (err) return console.log('error line:254 ' + err);
-            console.log("Update succsses Article");
+        Articles.updateOne({ _id: req.params.id }, updatePost, function (error) {
+            if (err) {
+                console.log(err.stack)
+                next(err);
+            } 
+            console.log("Update succsses Articles");
             res.send('Post edited successfully')
         });
     })
 });
-//---------------- error and 404
 
+//---------------- delete
+app.delete('/delete/:id', (req, res, next) => {
+    Articles.findOneAndDelete({ _id: req.params.id }, function (err, result) {
+        if (err || result == null) {
+            console.log('Error /delete ' + err);
+            // return res.sendStatus(500);
+           return next(err);
+        };
+        //res send json error
+        res.status(200).json(result)
+    });
+});
+//---------------- error and 404
 app.use((err, req, res, next) => {
     const isNotFound = ~err.message.indexOf('not found')
     const isCastError = ~err.message.indexOf('Cast to ObjectId failed')
     if (err.message && (isNotFound || isCastError)) {
-        return next()
+        return next(err)
     }
     console.log(err.stack);
-    res.status(500).json({ error: err.stack })
+    res.status(404).json({ Error: err.stack })
 })
 
 app.get('*', function (req, res) {
