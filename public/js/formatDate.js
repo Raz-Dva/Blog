@@ -3,7 +3,7 @@
         this.date = date;       
     };
     DateStr.prototype.formatDate = function () {
-        var d = new Date(this.date),
+        let d = new Date(this.date),
             month = "" + (d.getMonth() + 1),
             day = "" + d.getDate(),
             year = d.getFullYear();

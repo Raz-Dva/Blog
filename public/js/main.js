@@ -30,7 +30,7 @@ $(document).ready(function () {
       articles.forEach((item, index) => {
         let dataPost = renderClass.getDataPost(item);
         renderClass.getCategories(item);
-        if (renderClass.randomPost == index) renderClass.showRandomPost(item, dataPost);
+        if (renderClass.randomPost === index) renderClass.showRandomPost(item, dataPost);
         if (index < 5) {
           renderClass.getSlider(item, dataPost);
           indexHtml.cardsEmpty = `<div class="col-12 col-sm-6"><h2> No posts </h2></div>`;
@@ -55,7 +55,7 @@ $(document).ready(function () {
         script.src = '/public/js/staticHtml.js';
         body.appendChild(script);
         $(".remove_post").click(function () {
-          var question = confirm('Are you sure want to delete this post?');
+          let question = confirm('Are you sure want to delete this post?');
           if (question) {
             const postId = $(this).attr("data-id");
             ArtApi.remove(postId).then((post) => {

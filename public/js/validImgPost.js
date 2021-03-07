@@ -1,9 +1,9 @@
 function validImgPost(input, img, hint, btn) {
     function validateImage() {
-        var formData = new FormData();
-        var file = input[0].files[0];
+        const formData = new FormData();
+        let file = input[0].files[0];
         formData.append("Filedata", file);
-        var t = file.type.split("/").pop().toLowerCase();
+        let t = file.type.split("/").pop().toLowerCase();
         if (
             t != "jpeg" &&
             t != "jpg" &&
@@ -35,11 +35,11 @@ function validImgPost(input, img, hint, btn) {
             btn.attr("disabled", false);
             evt.stopPropagation();
             evt.preventDefault();
-            var files = evt.target.files;
-            var file = files[0];
-            var fileReader = new FileReader();
+            const files = evt.target.files;
+            let file = files[0];
+            const fileReader = new FileReader();
             fileReader.onload = function () {
-                var url = fileReader.result;
+                let url = fileReader.result;
                 img[0].src = url;
             };
             // Read file asynchronously.

@@ -22,7 +22,7 @@ class RenderHTML {
     };
     getDataPost(post) {
       let dataPost = {};
-      if (typeof post.text == "string" && post.text.length > 150) {
+      if (typeof post.text === "string" && post.text.length > 150) {
         dataPost.text = post.text.substr(0, 150) + "...";
       } else dataPost.text = post.text;
       dataPost.date = new DateStr(post.date).formatDate();
@@ -48,7 +48,7 @@ class RenderHTML {
       indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
                             <div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
-                                <a href="/update-post/${post._id}" class="edit_post"
+                                <a href="/update-page/${post._id}" class="edit_post"
                                   ><i class="fa fa-pencil"></i
                                 ></a>
                                 <button data-id="${post._id}" class="remove_post">

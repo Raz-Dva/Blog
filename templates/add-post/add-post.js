@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#input-file").change(function () {
-      var valueFile = $("input[type='file']").val();
+      let valueFile = $("input[type='file']").val();
       $(".input_file .title").text(valueFile);
     });
     let inputFile = $("#input-file"),
@@ -9,7 +9,6 @@ $(document).ready(function () {
       btnSend = $("#btn_send"),
       hintSuccsses = $("#hint_succsses"),
       tagsInput = $("#input-tags"),
-      form = $("#form");
     /////// valid input tags ////////
     tagsArr = tagsInput.tagsinput("items");
     tagsInput.on("beforeItemAdd", function (event) {

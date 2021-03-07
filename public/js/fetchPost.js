@@ -12,7 +12,7 @@ function fetchPost(btn, hint, tags) {
 
     for (let pair of formData.entries()) {
         // console.log(pair[0] + '==' + pair[1])
-        if (pair[1] == undefined || pair[1] == null || pair[1] == '') {
+        if (pair[1] === undefined || pair[1] === null || pair[1] === '') {
 
             $(`.form-control[name=${pair[0]}]`).addClass('is-invalid')
             return false
@@ -23,7 +23,7 @@ function fetchPost(btn, hint, tags) {
         }
     } 
     fetch($("#form").attr("action"), {
-        method: "POST",
+        method: $("#form").attr("method"),
         body: formData,
     }).then((res) => {
         if (res.ok) {
