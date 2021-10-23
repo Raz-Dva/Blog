@@ -8,44 +8,44 @@ indexHtml.mainPosts = `<div class="widget-title">
                         <h6>Main Posts</h6>
                       </div>`;
 class RenderHTML {
-    constructor() {
-      this.cards = '';
-      this.slider = '';
-      this.categories = '';
-      this.mainPosts = `<div class="widget-title">
+  constructor() {
+    this.cards = '';
+    this.slider = '';
+    this.categories = '';
+    this.mainPosts = `<div class="widget-title">
                           <h6>Main Posts</h6>
                         </div>`;
-      this.amountPosts = 0;
-      this.randomPost = Math.floor(Math.random() * 4);
-      this.Set = new Set();
-      this.offset = 0;
+    this.amountPosts = 0;
+    this.randomPost = Math.floor(Math.random() * 4);
+    this.Set = new Set();
+    this.offset = 0;
+  };
+  getDataPost(post) {
+    let dataPost = {};
+    if (typeof post.text == "string" && post.text.length > 150) {
+      dataPost.text = post.text.substr(0, 150) + "...";
+    } else dataPost.text = post.text;
+    dataPost.date = new DateStr(post.date).formatDate();
+    dataPost.img = arrayBufferToBase64(post.img.data.data);
+    dataPost.categories = post.categories.join("/");
+    return dataPost;
+  };
+  ////////////////////// 
+  getCategories(post) {
+    let arrCategories = post.categories;
+    const len = arrCategories.length;
+    for (let i = 0; i < len; i++) {
+      let val = arrCategories[i];
+      if (this.Set.has(val)) {
+        this.offset++;
+      } else {
+        this.Set.add(val);
+        indexHtml.categories += `<li><a href="/categories/:${val}">${val}</a></li>`;
+      }
     };
-    getDataPost(post) {
-      let dataPost = {};
-      if (typeof post.text == "string" && post.text.length > 150) {
-        dataPost.text = post.text.substr(0, 150) + "...";
-      } else dataPost.text = post.text;
-      dataPost.date = new DateStr(post.date).formatDate();
-      dataPost.img = arrayBufferToBase64(post.img.data.data);
-      dataPost.categories = post.categories.join("/");
-      return dataPost;
-    };
-    ////////////////////// 
-    getCategories(post) {
-      let arrCategories = post.categories;
-      const len = arrCategories.length;
-      for (let i = 0; i < len; i++) {
-        let val = arrCategories[i];
-        if (this.Set.has(val)) {
-          this.offset++;
-        } else {
-          this.Set.add(val);
-          indexHtml.categories += `<li><a href="/categories/:${val}">${val}</a></li>`;
-        }
-      };
-    };
-    getCards(post, postData) {
-      indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
+  };
+  getCards(post, postData) {
+    indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
                             <div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
                                 <a href="/update-post/${post._id}" class="edit_post"
@@ -72,9 +72,9 @@ class RenderHTML {
                               <div class="author-comments"><span>by </span>${post.author}</div>
                             </div>
                           </div>`;
-    };
-    showRandomPost(post, postData) {
-      indexHtml.featuredPost= `<div class="featured-post-area mb-50">
+  };
+  showRandomPost(post, postData) {
+    indexHtml.featuredPost = `<div class="featured-post-area mb-50">
                                 <div class="post-thumbnail mb-30">
                                   <a href="/single-post/${post._id}"
                                     ><img src="data:${post.img.contentType};base64, ${postData.img}" alt=""
@@ -91,9 +91,9 @@ class RenderHTML {
                                   <div class="author-comments"><span>by </span>${post.author}</div>
                                 </div>
                               </div>`;
-    };
-    getSlider(post, postData) {
-      indexHtml.slider += `<div class="single-hero-post d-flex flex-wrap">
+  };
+  getSlider(post, postData) {
+    indexHtml.slider += `<div class="single-hero-post d-flex flex-wrap">
                             <div
                               class="slide-post-thumbnail h-100 bg-img"
                               style="
@@ -126,5 +126,5 @@ class RenderHTML {
                               </div>
                             </div>
                           </div>`;
-    }
-  } //end class
+  }
+} //end class

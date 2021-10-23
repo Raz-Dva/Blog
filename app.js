@@ -5,43 +5,48 @@ const http = require('http'),
     app = express(),
     server = http.createServer(app),
     mongoose = require('mongoose'),
-    // bodyParser = require('body-parser'),
     fs = require('fs'),
     multer = require("multer"),
     formatDate = require('./assets/formatDate'),
     Articles = require('./mongoose_sсhema/sсhema'),
     clientPath = __dirname + "\\templates",
     port = 5000,
-    // path = require('path'),
     url = "mongodb://localhost:27017/",
+    controller = require('./controllers/controller');
+
     // ------------  multer upload  --------
-    upload = multer({
+    const upload = multer({
         storage: multer.memoryStorage()
     }).single('imgPost');
+
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
-app.use('/public/css', express.static('public/css'));
-app.use('/public/fonts', express.static('public/fonts/'));
-app.use('/public/img/blog-img', express.static('public/img/blog-img'));
-app.use('/public/img/core-img', express.static('public/img/core-img'));
-app.use('/public/js/jquery', express.static('public/js/jquery'));
-app.use('/public/js/bootstrap', express.static('public/js/bootstrap'));
-app.use('/public/js/plugins', express.static('public/js/plugins'));
-app.use('/public/js', express.static('public/js'));
+app.use('/public', express.static('public'));
 app.use('/templates', express.static('templates'));
+
+
+// app.use('/public/css', express.static('public/css'));
+// app.use('/public/fonts', express.static('public/fonts/'));
+// app.use('/public/img/blog-img', express.static('public/img/blog-img'));
+// app.use('/public/img/core-img', express.static('public/img/core-img'));
+// app.use('/public/js/jquery', express.static('public/js/jquery'));
+// app.use('/public/js/bootstrap', express.static('public/js/bootstrap'));
+// app.use('/public/js/plugins', express.static('public/js/plugins'));
+// app.use('/public/js', express.static('public/js'));
 
 // ------------  route --------
 //-------------- find all from mongoose schema
-app.get('/articles', (req, res, next) => {
-    Articles.find({}, function (err, result) {
-        if (err) {
-            console.log(err.stack)
-            next(err);
-        };
-        res.status(200).json(result)
-    });
-});
-
+// app.get('/articles', (req, res, next) => {
+//     Articles.find({}, function (err, result) {
+//         if (err) {
+//             console.log(err.stack)
+//             next(err);
+//         };
+//         res.status(200).json(result)
+//     });
+// });
+//  app.get('/articles', routes.)
+app.get('/articles', controller.articles);
 //----------------page categories:id
 app.get('/categories/:id', (req, res, next) => {
     fs.readFile(`${clientPath}\\/categories/categories.html`, "utf8", (error, data) => {
@@ -168,7 +173,6 @@ app.post('/add-post', (req, res, next) => {
         });
     })
 });
-
 //---------------- update post
 app.get('/update-post/:id', (req, res, next) => {
     fs.readFile(`${clientPath}\\/update-post/update-post.html`, "utf8", (error, data) => {
@@ -231,7 +235,6 @@ app.post('/update-post/:id', (req, res) => {
         });
     })
 });
-
 //---------------- delete
 app.delete('/delete/:id', (req, res, next) => {
     Articles.findOneAndDelete({ _id: req.params.id }, function (err, result) {
@@ -253,12 +256,11 @@ app.use((err, req, res, next) => {
     }
     console.log(err.stack);
     res.status(404).json({ Error: err.stack })
-})
-
+});
 app.get('*', function (req, res) {
     res.status(404).type('text/html');
     res.send("<h1> Not found 404</h1>");
-})
+});
 // ------------  mongoose --------
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) return console.log('error connect mongoose DB' + err);
