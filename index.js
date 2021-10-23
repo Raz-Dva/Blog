@@ -5,9 +5,8 @@ const http = require('http'),
     server = http.createServer(app),
     mongoose = require('mongoose'),
     port = 5000,
-    url = "mongodb://localhost:27017/",
     controller = require('./controllers/controller');
-
+    require('dotenv').config();
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
 app.use('/public', express.static('public'));
@@ -41,13 +40,14 @@ app.get('*', function (req, res) {
     res.send("<h1> Not found 404</h1>");
 });
 // ------------  mongoose --------
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+    console.log('Mongoose connection successful');
     if (err) return console.log('error connect mongoose DB' + err);
 
     server.on('error', function (e) {
         console.log('Mongoose default connection error: ' + err);
     });
-    server.listen(port, () => {
+    server.listen(process.env.PORT || port, () => {
         console.log(`Server is run on port ${port}`)
     });
 });
