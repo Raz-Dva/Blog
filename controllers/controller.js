@@ -18,7 +18,6 @@ module.exports.articles = (req, res, next) => {
       console.log(err.stack)
       next(err);
     };
-    console.log(result)
     res.status(200).json(result)
   });
 };
