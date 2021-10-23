@@ -3,7 +3,7 @@ const fs = require('fs');
 const clientPath = process.cwd();
 const express = require('express');
 const app = express();
-const formatDate = require(clientPath + '\\assets\\formatDate');
+const formatDate = require(clientPath + '/assets/formatDate');
 const multer = require("multer");
 const upload = multer({
   storage: multer.memoryStorage()
