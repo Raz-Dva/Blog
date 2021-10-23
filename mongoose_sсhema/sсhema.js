@@ -6,7 +6,6 @@ const articleScheme = new Schema({
         reuqire: true
     },
     title: {
-
         type: String,
         reuqire: true,
         default: "NoName"
