@@ -23,7 +23,7 @@ module.exports.articles = (req, res, next) => {
 };
 
 module.exports.categoriesId = (req, res, next) => {
-  fs.readFile(`${clientPath}\\templates\\categories\\categories.html`, "utf8", (error, data) => {
+  fs.readFile(`${clientPath}/templates/categories/categories.html`, "utf8", (error, data) => {
     if (error) {
       console.log("Error read file categories.html " + error);
       return res.status(400).type('text/html').send('<h1>Error read file  categories.html</h1>');
@@ -80,7 +80,7 @@ module.exports.categoriesId = (req, res, next) => {
 };
 
 module.exports.singlePostId = (req, res, next) => {
-  fs.readFile(`${clientPath}\\templates\\single-post.html`, "utf8", (error, data) => {
+  fs.readFile(`${clientPath}/templates/single-post.html`, "utf8", (error, data) => {
     if (error) {
       console.log("Error read file single-post.html " + error);
       return res.status(400).type('text/html').send('<h1>Error read file single-post.html</h1>');
@@ -107,7 +107,7 @@ module.exports.singlePostId = (req, res, next) => {
 };
 
 module.exports.getAddPost = (req, res) => {
-  res.sendFile(`${clientPath}\\templates\\add-post\\add-post.html`)
+  res.sendFile(`${clientPath}/templates/add-post/add-post.html`)
 };
 
 module.exports.addPost = (req, res, next) => {
@@ -151,7 +151,7 @@ module.exports.addPost = (req, res, next) => {
 };
 
 module.exports.getUpdatePostId = (req, res, next) => {
-  fs.readFile(`${clientPath}\\templates\\update-post\\update-post.html`, "utf8", (error, data) => {
+  fs.readFile(`${clientPath}/templates/update-post/update-post.html`, "utf8", (error, data) => {
     if (error) {
       console.log("Error read file update-post.html " + error);
       return res.status(400).type('text/html').send('<h1>Error read file update-postaf.html</h1>');
