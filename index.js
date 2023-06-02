@@ -10,7 +10,7 @@ require('dotenv').config();
 app.use(express.static(__dirname + "/templates"));
 app.use('/public', express.static('public'));
 app.use('/templates', express.static('templates'));
-
+app.use(express.json());
 // ------------  routes --------
 app.get('/articles', controller.articles);
 app.get('/categories/:id', controller.categoriesId);
@@ -39,6 +39,7 @@ app.get('*', function (req, res) {
     res.send("<h1> Not found 404</h1>");
 });
 // ------------  mongoose --------
+console.log(process.env.DB_USER)
 mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.qy6hg4h.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) return console.log('error connect mongoose DB' + err);
 
