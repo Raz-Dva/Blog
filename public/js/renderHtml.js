@@ -109,22 +109,22 @@ class RenderHTML {
                                   href="/single-post/${post._id}"
                                   class="post-title"
                                   data-animation="fadeIn"
-                                  data-delay="300ms"
+                                  data-delay="100ms"
                                 >
                                   <h2>${post.title}</h2>
                                 </a>
-                                <p class="post-excerpt" data-animation="fadeIn" data-delay="500ms">
+                                <p class="post-excerpt" data-animation="fadeIn" data-delay="100ms">
                                   ${postData.text}
                                 </p>
                                 <a
                                   href="/single-post/${post._id}"
                                   class="btn nikki-btn"
                                   data-animation="fadeIn"
-                                  data-delay="700ms"
+                                  data-delay="100ms"
                                   >Read More</a
                                 >
                               </div>
                             </div>
                           </div>`;
   }
-} //end class
+}

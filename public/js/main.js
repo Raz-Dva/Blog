@@ -5,6 +5,7 @@ $(document).ready(function () {
     $slider = $('#wrap-slider')[0],
     $featuredPost = $('#featured-post')[0]
   $mainPposts = $('#main-posts')[0];
+  $preloader = $('#preloader')[0];
   //////  CLASS API //////////
   class ArtApi {
     static fetch() {
@@ -31,7 +32,7 @@ $(document).ready(function () {
         let dataPost = renderClass.getDataPost(item);
         renderClass.getCategories(item);
         if (renderClass.randomPost == index) renderClass.showRandomPost(item, dataPost);
-        if (index < 5) {
+        if (index < 3) {
           renderClass.getSlider(item, dataPost);
           indexHtml.cardsEmpty = `<div class="col-12 col-sm-6"><h2> No posts </h2></div>`;
         } else {
@@ -42,6 +43,7 @@ $(document).ready(function () {
       $featuredPost.innerHTML = indexHtml.featuredPost;
       $categories.innerHTML = indexHtml.categories;
       $posts.innerHTML = indexHtml.cardsEmpty + indexHtml.cards;
+      $preloader.style.display = 'none';
       $slider.innerHTML = indexHtml.slider;
       indexHtml.categories = '';
       indexHtml.cards = '';
@@ -64,7 +66,7 @@ $(document).ready(function () {
                   renderClass.getCategories(item);
                 } else {
                   $(`.card-post`).remove(`div[data-id='${postId}']`);
-                  if (articles.length <= 6) {
+                  if (articles.length <= 4) {
                     $posts.innerHTML = `<div class="col-12 col-sm-6"><h2> No posts </h2></div>`;
                   }
                 }

@@ -39,7 +39,7 @@ app.get('*', function (req, res) {
     res.send("<h1> Not found 404</h1>");
 });
 // ------------  mongoose --------
-mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@commonclaster.2uxlr.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.qy6hg4h.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) return console.log('error connect mongoose DB' + err);
 
     server.on('error', function (e) {

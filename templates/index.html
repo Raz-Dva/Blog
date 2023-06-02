@@ -1,125 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="" name="description"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            name="viewport"
     />
     <title>Nikki - Blog</title>
-    <link rel="icon" href="../public/img/core-img/favicon.ico" />
-    <link rel="stylesheet" href="/public/css/style.css" />
-  </head>
-  <body>
-    <header class="header-area" id="header">
-    </header>
-    <section class="hero-area">
-      <!-- Preloader -->
-      <!-- <div class="preloader d-flex align-items-center justify-content-center">
+    <link href="../public/img/core-img/favicon.ico" rel="icon"/>
+    <link href="/public/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header-area" id="header">
+</header>
+<section class="hero-area">
+    <div class="preloader align-items-center justify-content-center" id="preloader">
         <div class="circle-preloader">
-          <div class="a" style="--n: 5;">
-            <div class="dot" style="--i: 0;"></div>
-            <div class="dot" style="--i: 1;"></div>
-            <div class="dot" style="--i: 2;"></div>
-            <div class="dot" style="--i: 3;"></div>
-            <div class="dot" style="--i: 4;"></div>
-          </div>
+            <div class="a" style="--n: 5;">
+                <div class="dot" style="--i: 0;"></div>
+                <div class="dot" style="--i: 1;"></div>
+                <div class="dot" style="--i: 2;"></div>
+                <div class="dot" style="--i: 3;"></div>
+                <div class="dot" style="--i: 4;"></div>
+            </div>
         </div>
-      </div> -->
-
-      <div class="hero-post-slides owl-carousel" id="wrap-slider"></div>
-    </section>
-    <!-- ##### Blog Content Area Start ##### -->
-    <section class="blog-content-area section-padding-100">
-      <div class="container">
+    </div>
+    <div class="hero-post-slides owl-carousel" id="wrap-slider"></div>
+</section>
+<!-- ##### Blog Content Area Start ##### -->
+<section class="blog-content-area section-padding-100">
+    <div class="container">
         <div class="row justify-content-center">
-          <!-- Blog Posts Area -->
-          <div class="col-12 col-lg-8">
-            <div class="blog-posts-area">
-              <div class="row">
-                <!-- Featured Post Area -->
-                <div class="col-12" id="featured-post"></div>
-              </div>
-              <div class="row" id="list-arts">
-                <!-- Single Blog Post -->
-              </div>
+            <!-- Blog Posts Area -->
+            <div class="col-12 col-lg-8">
+                <div class="blog-posts-area">
+                    <div class="row">
+                        <!-- Featured Post Area -->
+                        <div class="col-12" id="featured-post"></div>
+                    </div>
+                    <div class="row" id="list-arts">
+                        <!-- Single Blog Post -->
+                    </div>
+                </div>
             </div>
-          </div>
-          <!-- Blog Sidebar Area -->
-          <div class="col-12 col-sm-9 col-md-6 col-lg-4">
-            <div class="post-sidebar-area">
-              <!-- ##### Single Widget Area ##### -->
-              <div class="single-widget-area mb-30">
-                <div class="widget-title">
-                  <h6>
-                    <a href="/about.html">About Me</a>
-                  </h6>
+            <!-- Blog Sidebar Area -->
+            <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                <div class="post-sidebar-area">
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area mb-30">
+                        <div class="widget-title">
+                            <h6>
+                                <a href="/about.html">About Me</a>
+                            </h6>
+                        </div>
+                        <div class="about-thumbnail">
+                            <a href="/about.html"
+                            ><img alt="" src="../public/img/blog-img/about-me.jpg"
+                            /></a>
+                        </div>
+                        <div class="widget-content text-center">
+                            <img alt="" src="../public/img/core-img/signature.png"/>
+                            <p>Hello! My name`s Ivan.</p>
+                            <p>
+                                I`m a junior front-end. This blog was developed for my
+                                portfolio. It was written using technologies such as Node
+                                JS, Express, Mongoose, MongoDB. While writing this site ...
+                            </p>
+                        </div>
+                    </div>
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area mb-30">
+                        <div class="widget-title">
+                            <h6>My Contacts</h6>
+                        </div>
+                        <div class="widget-social-info text-center">
+                            <a href="https://www.facebook.com/ivan.goncharov.180"
+                            ><i class="fa fa-facebook"></i
+                            ></a>
+                            <a href="mailto:my.poshta.goncharov@gmail.com"
+                            ><i class="fa fa-envelope"></i
+                            ></a>
+                            <a href="https://github.com/Raz-Dva"
+                            ><i class="fa fa-git"></i
+                            ></a>
+                            <a
+                                    href="https://www.linkedin.com/in/ivan-honcharov-7a39371a1/"
+                            ><i class="fa fa-linkedin"></i
+                            ></a>
+                        </div>
+                    </div>
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area mb-30" id="main-posts">
+                        <!-- Title -->
+                    </div>
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area mb-30">
+                        <!-- Title -->
+                        <div class="widget-title">
+                            <h6>Popular tags</h6>
+                        </div>
+                        <!-- Tags -->
+                        <ol class="popular-tags d-flex flex-wrap" id="block-tags"></ol>
+                    </div>
                 </div>
-                <div class="about-thumbnail">
-                  <a href="/about.html"
-                    ><img src="../public/img/blog-img/about-me.jpg" alt=""
-                  /></a>
-                </div>
-                <div class="widget-content text-center">
-                  <img src="../public/img/core-img/signature.png" alt="" />
-                  <p>Hello! My name`s Ivan.</p>
-                  <p>
-                    I`m a junior front-end. This blog was developed for my
-                    portfolio. It was written using technologies such as Node
-                    JS, Express, Mongoose, MongoDB. While writing this site ...
-                  </p>
-                </div>
-              </div>
-              <!-- ##### Single Widget Area ##### -->
-              <div class="single-widget-area mb-30">
-                <div class="widget-title">
-                  <h6>My Contacts</h6>
-                </div>
-                <div class="widget-social-info text-center">
-                  <a href="https://www.facebook.com/ivan.goncharov.180"
-                    ><i class="fa fa-facebook"></i
-                  ></a>
-                  <a href="mailto:my.poshta.goncharov@gmail.com"
-                    ><i class="fa fa-envelope"></i
-                  ></a>
-                  <a href="https://github.com/Raz-Dva"
-                    ><i class="fa fa-git"></i
-                  ></a>
-                  <a
-                    href="https://www.linkedin.com/in/ivan-honcharov-7a39371a1/"
-                    ><i class="fa fa-linkedin"></i
-                  ></a>
-                </div>
-              </div>
-              <!-- ##### Single Widget Area ##### -->
-              <div class="single-widget-area mb-30" id="main-posts">
-                <!-- Title -->
-              </div>
-              <!-- ##### Single Widget Area ##### -->
-              <div class="single-widget-area mb-30">
-                <!-- Title -->
-                <div class="widget-title">
-                  <h6>Popular tags</h6>
-                </div>
-                <!-- Tags -->
-                <ol class="popular-tags d-flex flex-wrap" id="block-tags"></ol>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </section>
-        <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area" id="footer">      
-    </footer>   
-    <script src="/public/js/jquery/jquery-2.2.4.min.js"></script>
-    <script src="/public/js/bootstrap/bootstrap.min.js"></script>
-    <script src="/public/js/plugins/plugins.js"></script>
-    <script src="/public/js/formatDate.js"></script>
-    <script src="/public/js/BufferToBase64.js"></script>
-    <script src="/public/js/renderHtml.js"></script>
-    <script src="/public/js/main.js"></script>
-  </body>
+    </div>
+</section>
+<!-- ##### Footer Area Start ##### -->
+<footer class="footer-area" id="footer">
+</footer>
+<script src="/public/js/jquery/jquery-2.2.4.min.js"></script>
+<script src="/public/js/bootstrap/bootstrap.min.js"></script>
+<script src="/public/js/plugins/plugins.js"></script>
+<script src="/public/js/formatDate.js"></script>
+<script src="/public/js/BufferToBase64.js"></script>
+<script src="/public/js/renderHtml.js"></script>
+<script src="/public/js/main.js"></script>
+</body>
 </html>
