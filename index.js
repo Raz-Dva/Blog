@@ -8,10 +8,10 @@ const http = require('http'),
     controller = require('./controllers/controller');
 require('dotenv').config();
 const router = express.Router();
-// const clientPath = process.cwd();
+const clientPath = process.cwd();
 
 router.get('/', async (req, res, next) => {
-    return res.status(200).send({ title: 'TEST ++' })
+    return res.status(200).sendFile(`${clientPath}/templates/index.html`)
 })
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
