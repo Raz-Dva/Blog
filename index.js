@@ -16,8 +16,8 @@ router.get('/', async (req, res, next) => {
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
 
-app.use('/public', express.static('public'));
-app.use('/templates', express.static('templates'));
+app.use('/public', express.static(__dirname + '/public'));
+// app.use('/templates', express.static('templates'));
 
 app.use(express.json());
 // ------------  routes --------

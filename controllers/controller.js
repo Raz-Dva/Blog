@@ -129,7 +129,7 @@ module.exports.addPost = (req, res, next) => {
       data: buffer,
       contentType: fileType
     };
-    // console.log(req.body.tagsPost)
+
     var newPost = {
       author: req.body.authorPost,
       title: req.body.titlePost,
@@ -160,7 +160,7 @@ module.exports.getUpdatePostId = (req, res, next) => {
       if (err) {
         console.log(err.stack)
         next(err);
-      };
+      }
       let imgResult = result.img.data.toString('base64');
       data = data
         .replace('{id}', req.params.id)
@@ -191,7 +191,7 @@ module.exports.updatePostId = (req, res) => {
           date: req.body.datePost,
           categories: JSON.parse(req.body.tagsPost)
       };
-      if (req.file == undefined || req.file == true) {
+      if (req.file === undefined || req.file === true) {
           updatePost = reqBody;
       } else {
           var buffer = req.file.buffer;
@@ -218,7 +218,7 @@ module.exports.delete = (req, res, next) => {
       if (err || result == null) {
           console.log('Error /delete ' + err);
           return next(err);
-      };
+      }
       res.status(200).json(result)
   });
 };
