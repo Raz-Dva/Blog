@@ -4,29 +4,22 @@ const http = require('http'),
     server = http.createServer(app),
     mongoose = require('mongoose'),
     port = 5000,
-    // {resolve} = require('path');
+    router = require('./router/routes')
     controller = require('./controllers/controller');
 require('dotenv').config();
-const router = express.Router();
-const clientPath = process.cwd();
 
-router.get('/', async (req, res, next) => {
-    return res.status(200).sendFile(`${clientPath}/templates/index.html`)
-})
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
-
 app.use('/public', express.static(__dirname + '/public'));
-// app.use('/templates', express.static('templates'));
-
+app.use('/templates', express.static(__dirname + '/templates'));
 app.use(express.json());
 // ------------  routes --------
 
-app.use('/indexhtml', router);
+app.use('/api', router);
+app.use('/', router);
 
-
-app.get('/articles', controller.articles);
-app.get('/categories/:id', controller.categoriesId);
+// app.get('/articles', controller.articles);
+// app.get('/categories/:id', controller.categoriesId);
 //---------------- single post :id
 app.get('/single-post/:id', controller.singlePostId);
 //----------------  add new post
