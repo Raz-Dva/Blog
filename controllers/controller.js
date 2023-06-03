@@ -13,14 +13,14 @@ app.use('/public', express.static(__dirname + '/public'));
 app.use('/templates', express.static(__dirname + '/templates'));
 
 module.exports.articles = (req, res, next) => {
-    console.log('Articles find start')
-
+    console.log('Articles find start', clientPath + '/mongoose_sсhema/sсhema')
+    console.log(Articles);
     Articles.find({}, function (err, result) {
     if (err) {
         console.log('Articles find', err)
       console.log(err.stack)
       next(err);
-    };
+    }
     res.status(200).json(result)
   });
 };
