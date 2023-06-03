@@ -4,17 +4,27 @@ const http = require('http'),
     server = http.createServer(app),
     mongoose = require('mongoose'),
     port = 5000,
-    {resolve} = require('path');
+    // {resolve} = require('path');
     controller = require('./controllers/controller');
 require('dotenv').config();
+const router = express.Router();
+// const clientPath = process.cwd();
+
+router.get('/', async (req, res, next) => {
+    return res.status(200).send({ title: 'TEST ++' })
+})
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
 
-app.use('/public', express.static(__dirname + 'public'));
-app.use('/templates', express.static(__dirname + 'templates'));
+app.use('/public', express.static('public'));
+app.use('/templates', express.static('templates'));
 
 app.use(express.json());
 // ------------  routes --------
+
+app.use('/indexhtml', router);
+
+
 app.get('/articles', controller.articles);
 app.get('/categories/:id', controller.categoriesId);
 //---------------- single post :id
@@ -42,7 +52,7 @@ app.get('*', function (req, res) {
     res.send("<h1> Not found 404</h1>");
 });
 // ------------  mongoose --------
-console.log(process.env.DB_USER)
+
 mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.qy6hg4h.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) return console.log('error connect mongoose DB' + err);
 
