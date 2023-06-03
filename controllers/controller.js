@@ -1,9 +1,9 @@
 const clientPath = process.cwd();
-const Articles = require(clientPath + '/mongoose_sсhema/sсhema');
+const Articles = require( '../mongoose_sсhema/sсhema');
 const fs = require('fs');
 const express = require('express');
 const app = express();
-const formatDate = require(clientPath + '/assets/formatDate');
+const formatDate = require('../assets/formatDate');
 const multer = require("multer");
 const upload = multer({
   storage: multer.memoryStorage()
@@ -13,16 +13,20 @@ app.use('/public', express.static(__dirname + '/public'));
 app.use('/templates', express.static(__dirname + '/templates'));
 
 module.exports.articles = (req, res, next) => {
-    console.log('Articles find start', clientPath + '/mongoose_sсhema/sсhema')
+    console.log('Articles find start')
     console.log(Articles);
-    Articles.find({}, function (err, result) {
-    if (err) {
-        console.log('Articles find', err)
-      console.log(err.stack)
-      next(err);
+    try {
+        Articles.find({}, function (err, result) {
+            if (err) {
+                console.log('Articles find', err)
+                console.log(err.stack)
+                next(err);
+            }
+            res.status(200).json(result)
+        });
+    } catch (err) {
+        console.log('Catched error', err)
     }
-    res.status(200).json(result)
-  });
 };
 
 module.exports.categoriesId = (req, res, next) => {
