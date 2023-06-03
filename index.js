@@ -15,7 +15,7 @@ app.use('/templates', express.static(__dirname + '/templates'));
 app.use(express.json());
 // ------------  routes --------
 
-app.use('/api', router);
+// app.use('/api', router);
 app.use('/', router);
 
 // app.get('/articles', controller.articles);
