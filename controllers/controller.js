@@ -9,8 +9,8 @@ const upload = multer({
   storage: multer.memoryStorage()
 }).single('imgPost');
 
-app.use('/public', express.static('public'));
-app.use('/templates', express.static('templates'));
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/templates', express.static(__dirname + '/templates'));
 
 module.exports.articles = (req, res, next) => {
   Articles.find({}, function (err, result) {
