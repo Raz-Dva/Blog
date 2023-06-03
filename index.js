@@ -4,12 +4,15 @@ const http = require('http'),
     server = http.createServer(app),
     mongoose = require('mongoose'),
     port = 5000,
+    {resolve} = require('path');
     controller = require('./controllers/controller');
 require('dotenv').config();
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
-app.use('/public', express.static('public'));
-app.use('/templates', express.static('templates'));
+
+app.use('/public', express.static(__dirname + 'public'));
+app.use('/templates', express.static(__dirname + 'templates'));
+
 app.use(express.json());
 // ------------  routes --------
 app.get('/articles', controller.articles);
