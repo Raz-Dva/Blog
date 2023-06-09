@@ -54,7 +54,7 @@ mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_P
     });
 
     server.listen(process.env.PORT || port, () => {
-        console.log(`Server is run on port ${port}`);
+        console.log(`Server is run on port ${process.env.PORT || port}`);
         console.log('Mongoose connection successful');
     });
 });

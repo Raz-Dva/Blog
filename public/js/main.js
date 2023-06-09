@@ -3,8 +3,8 @@ $(document).ready(function () {
     BASEURL = "/articles",
     $categories = $('#block-tags')[0],
     $slider = $('#wrap-slider')[0],
-    $featuredPost = $('#featured-post')[0]
-  $mainPposts = $('#main-posts')[0];
+    $featuredPost = $('#featured-post')[0],
+  $mainPposts = $('#main-posts')[0],
   $preloader = $('#preloader')[0];
   //////  CLASS API //////////
   class ArtApi {
@@ -12,6 +12,7 @@ $(document).ready(function () {
       return fetch(BASEURL, { method: "get" }).then((res) => {
         return res.json();
       });
+       // add catch err
     }
     static remove(id) {
       return fetch(`delete/${id}`, { method: "delete" })
@@ -22,7 +23,7 @@ $(document).ready(function () {
           return res.json() }
         )
     }
-  };
+  }
   ////// api fetch ///////
   let rendering = () => {
     let renderClass = new RenderHTML();
@@ -31,7 +32,7 @@ $(document).ready(function () {
       articles.forEach((item, index) => {
         let dataPost = renderClass.getDataPost(item);
         renderClass.getCategories(item);
-        if (renderClass.randomPost == index) renderClass.showRandomPost(item, dataPost);
+        if (renderClass.randomPost === index) renderClass.showRandomPost(item, dataPost);
         if (index < 3) {
           renderClass.getSlider(item, dataPost);
           indexHtml.cardsEmpty = `<div class="col-12 col-sm-6"><h2> No posts </h2></div>`;
@@ -74,7 +75,7 @@ $(document).ready(function () {
               });
               $categories.innerHTML = indexHtml.categories;
             });
-          };
+          }
           renderClass.Set = new Set();
           indexHtml.categories = '';
         });

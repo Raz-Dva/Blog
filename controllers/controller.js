@@ -1,5 +1,5 @@
 const clientPath = process.cwd();
-const Articles = require( '../mongoose_sсhema/sсhema');
+const Articles = require( '../mongoose_schema/schema');
 const fs = require('fs');
 const express = require('express');
 const app = express();
@@ -14,7 +14,6 @@ app.use('/templates', express.static(__dirname + '/templates'));
 
 module.exports.articles = (req, res, next) => {
     console.log('Articles find start')
-    console.log(Articles);
     try {
         Articles.find({}, function (err, result) {
             if (err) {
@@ -22,10 +21,14 @@ module.exports.articles = (req, res, next) => {
                 console.log(err.stack)
                 next(err);
             }
+            console.log('Articles ++ ')
+            console.log(result)
             res.status(200).json(result)
         });
     } catch (err) {
-        console.log('Catched error', err)
+        console.log('Catched error', err);
+        next(err)
+        throw new Error("Whoops!");
     }
 };
 
@@ -34,13 +37,13 @@ module.exports.categoriesId = (req, res, next) => {
     if (error) {
       console.log("Error read file categories.html " + error);
       return res.status(400).type('text/html').send('<h1>Error read file  categories.html</h1>');
-    };
+    }
     let tag = (req.params.id).substring(1);
     Articles.find({ categories: { $all: [tag] } }, (err, result) => {
       if (err) {
         console.log(err.stack)
         next(err);
-      };
+      }
       if (result.length > 0) {
         let cardPost = result.map((post) => {
           let postText;
