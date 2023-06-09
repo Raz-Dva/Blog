@@ -23,7 +23,7 @@ module.exports.articles = (req, res, next) => {
             }
             console.log('Articles ++ ')
             console.log(result)
-            res.status(200).json(result)
+            res.status(200).json([result[0]])
         });
     } catch (err) {
         console.log('Catched error', err);
