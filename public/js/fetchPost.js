@@ -1,19 +1,12 @@
 function fetchPost(btn, hint, tags) {
-    let formData = new FormData($("#form")[0]);
-    // let tagsInput1 = $("#input-tags");    
-    // let tags = tagsInput1.tagsinput('items');
-    // console.log(inputTags.val())
+    const form = $("#form");
+    const formData = new FormData(form[0]);
     
     formData.delete('tagsPost');
     formData.append('tagsPost', JSON.stringify(tags));
 
-    // formData.append('tagsPost', JSON.stringify(tagsInput));
-    // console.log(typeof JSON.stringify(tagsInput))
-
     for (let pair of formData.entries()) {
-        // console.log(pair[0] + '==' + pair[1])
-        if (pair[1] == undefined || pair[1] == null || pair[1] == '') {
-
+        if (!pair[1] && pair[0] !== 'oldImg') {
             $(`.form-control[name=${pair[0]}]`).addClass('is-invalid')
             return false
 
@@ -22,7 +15,7 @@ function fetchPost(btn, hint, tags) {
             btn.html("Send").attr("disabled", false);
         }
     } 
-    fetch($("#form").attr("action"), {
+    fetch(form.attr("action"), {
         method: "POST",
         body: formData,
     }).then((res) => {

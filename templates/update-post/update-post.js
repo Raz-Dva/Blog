@@ -1,11 +1,13 @@
 $(document).ready(function () {
-    let inputFile = $("#input-file"),
+    const inputFile = $("#input-file"),
+        postId = $("#post-id"),
         previewer = $("#img-post"),
         hintError = $("#hint_err"),
         btnSend = $("#btn_send"),
         tagsInput = $("#input-tags"),
-        tagsArr = tagsInput.tagsinput("items"),
         hintSuccsses = $("#hint_succsses");
+    let tagsArr = tagsInput.tagsinput("items");
+
     /////// valid input tags ////////
     tagsArr = tagsInput.tagsinput("items");
     tagsInput.on("beforeItemAdd", function (event) {
@@ -17,8 +19,33 @@ $(document).ready(function () {
     ///// valid img //////
     validImgPost(inputFile, previewer, hintError, btnSend);
     ///// fetch //////
-    $("#btn_send").click(function (e) {
+    btnSend.click(function (e) {
         e.preventDefault();
+        localStorage.setItem('updatedPostId', postId.text())
         fetchPost(btnSend, hintSuccsses, tagsArr);
     });
+
+    /////////
+    // addEventListener('beforeunload', (event) => {
+    //
+    //     // event.preventDefault(); /*✔️ To show a dialog we need this preventDefault() */
+    //
+    //     //
+    //     // do some action
+    //     //
+    //     // alert('++++')
+    //     console.log()
+    //     // return event.returnValue = ''; /*✔️ Need to return a value */
+    //     return ''
+    // });
+    ////////////////////
+    // history.pushState({}, '', '/');
+    // addEventListener("popstate", (event) => {
+    //     alert('+++')
+    //     event.preventDefault();
+    // });
+    // window.onpopstate = function(event) {
+    //     // event.preventDefault();
+    //     alert('+++')
+    // };
 });

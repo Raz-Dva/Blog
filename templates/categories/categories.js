@@ -1,7 +1,6 @@
 $(document).ready(function () {
     $categories = $("#block-tags")[0];
-    ///////////////////
-    fetch("/articles", { method: "get" })
+    fetch("/articles", {method: "get"})
         .then((res) => {
             return res.json();
         })
@@ -16,4 +15,4 @@ $(document).ready(function () {
                 $categories.innerHTML = "<h3>No categories</h3>";
             }
         });
-}); // end $ready
+});

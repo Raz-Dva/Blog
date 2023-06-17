@@ -2242,7 +2242,7 @@ blockquote.shortcodes {
     padding: 30px 15px;
   }
 }
-
+.post-line,
 .contact-form-area .form-control {
   position: relative;
   z-index: 2;
@@ -2251,12 +2251,15 @@ blockquote.shortcodes {
   background-color: #ffffff;
   font-size: 14px;
   margin-bottom: 15px;
-  border: 1px solid #ebebeb;
+  border: 1px solid #b7b7b7;
   border-radius: 0;
   padding: 15px 30px;
   color: #a6a6a6;
   -webkit-transition-duration: 500ms;
   transition-duration: 500ms;
+}
+.post-line {
+  border: none;
 }
 .contact-form-area .form-control:focus {
   box-shadow: none;

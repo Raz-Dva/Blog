@@ -43,6 +43,7 @@
               <h4>Update Post</h4>
               <!--  Form Area -->
               <div class="contact-form-area">
+                <div class="post-line">Post id: <span id="post-id">{post_id}</span></div>
                 <form
                   action="/update-post/{id}"
                   method="post"
@@ -82,11 +83,12 @@
                           name="imgPost"
                         />
                       </label>
+                      <input type="text" name="oldImg" hidden value="{old_path_img}">
                       <p class="title text-danger d-none" id="hint_err"></p>
                       <div  style="overflow:hidden; max-width: 200px; max-height: 200px" class="">
                         <img
                           id="img-post"
-                          src="data:{post_imgType};base64, {post_img}"
+                          src="{post_img}"
                           alt=""
                         />
                       </div>
@@ -141,7 +143,7 @@
     <footer class="footer-area" id="footer"></footer>
     <script src="/public/js/jquery/jquery-2.2.4.min.js"></script>
     <script src="/public/js/bootstrap/bootstrap.min.js"></script>
-    <script src="/public/js/bootstrap//tagsinput.js"></script>
+    <script src="/public/js/bootstrap/tagsinput.js"></script>
     <script src="/public/js/BufferToBase64.js"></script>
     <script src="/public/js/validImgPost.js"></script>
     <script src="/public/js/fetchPost.js"></script>

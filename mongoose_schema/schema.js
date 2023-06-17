@@ -14,11 +14,6 @@ const articleScheme = new Schema({
         type: String,
         reuqire: true
     },
-    img:
-    {
-        data: Buffer,
-        contentType: String
-    },
     date: {
         type: Date,
         reuqire: true,
@@ -26,6 +21,9 @@ const articleScheme = new Schema({
     },
     categories: {
         type: Array
+    },
+    imgPath: {
+        type: String
     }
 });
 

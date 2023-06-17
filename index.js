@@ -15,20 +15,8 @@ app.use('/templates', express.static(__dirname + '/templates'));
 app.use(express.json());
 // ------------  routes --------
 
-// app.use('/api', router);
 app.use('/', router);
 
-// app.get('/articles', controller.articles);
-// app.get('/categories/:id', controller.categoriesId);
-//---------------- single post :id
-app.get('/single-post/:id', controller.singlePostId);
-//----------------  add new post
-app.get('/add-post', controller.getAddPost);
-app.post('/add-post', controller.addPost);
-//---------------- update post
-app.get('/update-post/:id', controller.getUpdatePostId);
-app.post('/update-post/:id', controller.updatePostId);
-//---------------- delete
 app.delete('/delete/:id', controller.delete);
 //---------------- error and 404
 app.use((err, req, res, next) => {
@@ -42,7 +30,7 @@ app.use((err, req, res, next) => {
 });
 app.get('*', function (req, res) {
     res.status(404).type('text/html');
-    res.send("<h1> Not found 404</h1>");
+    res.send("<h1> Not found 404</h1>"); // add page not found
 });
 // ------------  mongoose --------
 

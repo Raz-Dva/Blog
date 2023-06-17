@@ -1,0 +1,62 @@
+function fetchPost(id) {
+    fetch(`/post/${id}`, {method: "get"}).then((res) => res.json())
+        .then((post) => {
+            const postData = ((post) => {
+                const dataPost = {};
+                if (typeof post.text === "string" && post.text.length > 150) {
+                    dataPost.text = post.text.substr(0, 150) + "...";
+                } else {
+                    dataPost.text = post.text;
+                }
+                dataPost.date = new DateStr(post.date).formatDate();
+                dataPost.imgPath = post?.imgPath ? post.imgPath : 'no-image.jpg';
+                dataPost.categories = post.categories.join("/");
+                return dataPost;
+            })(post);
+
+
+            $(`div[data-id='${id}']`).html(`<div class="single-blog-post mb-50 overflow-hidden">
+                              <div class="post-thumbnail">
+                                <a href="/update-post/${post._id}" class="edit_post"
+                                  ><i class="fa fa-pencil"></i
+                                ></a>
+                                <button data-id="${post._id}" class="remove_post">
+                                  <i class="fa fa-remove"></i>
+                                </button>
+                                <a href="/single-post/${post._id}" class="img_post">
+                                  <img
+                                    src="../public/img/blog-img/${postData.imgPath}"
+                                    alt=""
+                                  />
+                                </a>
+                              </div>
+                              <div class="post-content">
+                                <p class="post-date">${postData.date}/${postData.categories}</p>
+                                <a href="/single-post/${post._id}" class="post-title">
+                                  <h4>${post.title}</h4>
+                                </a>
+                                <p class="post-excerpt">${postData.text}</p>
+                              </div>
+                              <hr />
+                              <div class="author-comments"><span>by </span>${post.author}</div>
+                            </div>`)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+}
+
+window.addEventListener("pageshow", function (event) {
+    const updatedPostId = localStorage.getItem('updatedPostId');
+    const fromPageUpdate = localStorage.getItem('fromUrl');
+
+    localStorage.removeItem('updatedPostId');
+    localStorage.removeItem('fromUrl')
+
+    var historyTraversal = event.persisted ||
+        (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+    if (historyTraversal && updatedPostId && fromPageUpdate && fromPageUpdate.startsWith('/update-post/')) {
+        fetchPost(updatedPostId)
+    }
+});
