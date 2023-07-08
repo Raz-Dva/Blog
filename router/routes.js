@@ -1,6 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const controller = require('../controllers/controller');
+const express = require("express"),
+    router = express.Router(),
+    controller = require('../controllers/controller'),
+    multer = require('multer'),
+    upload = multer({ storage: multer.memoryStorage()});
 
 router.get('/articles', controller.articles);
 router.get('/categories/:id', controller.categoryId);
@@ -9,6 +11,6 @@ router.get('/post/:id', controller.getPost);
 router.get('/add-post', controller.getAddPost);
 router.post('/add-post', controller.addPost);
 router.get('/update-post/:id', controller.getUpdatePostId);
-router.post('/update-post/:id', controller.updatePostId);
+router.post('/update-post/:id', upload.single('imgPost'), controller.updatePostId);
 
 module.exports = router;

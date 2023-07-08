@@ -42,6 +42,7 @@ Version: - v1.0.0
 @import url(animate.css);
 @import url(magnific-popup.css);
 @import url(font-awesome.min.css);
+@import url(loader.css);
 /* :: 3.0 Base CSS */
 * {
   margin: 0;
@@ -2020,9 +2021,9 @@ img {
   color: #000;
   background-color: transparent;
 }
-#btn_send.succsses,
-.succsses,
-.succsses:focus {
+#btn_send.successes,
+.successes,
+.successes:focus {
   color: #fff;
   opacity: 1;
   background-color: #28a745;
@@ -2058,8 +2059,8 @@ img {
 }
 
 .form-group .title {
-  white-space: nowrap; /* Запрещаем перенос строк */
-  overflow: hidden; /* Обрезаем все, что не помещается в область */
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
 }
@@ -2259,7 +2260,7 @@ blockquote.shortcodes {
   transition-duration: 500ms;
 }
 .post-line {
-  border: none;
+  border-color: #e1e1e1;
 }
 .contact-form-area .form-control:focus {
   box-shadow: none;

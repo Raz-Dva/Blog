@@ -4,8 +4,9 @@ const http = require('http'),
     server = http.createServer(app),
     mongoose = require('mongoose'),
     port = 5000,
-    router = require('./router/routes')
+    router = require('./router/routes'),
     controller = require('./controllers/controller');
+
 require('dotenv').config();
 
 //---------------- express static

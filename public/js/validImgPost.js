@@ -1,15 +1,15 @@
 function validImgPost(input, img, hint, btn) {
     function validateImage() {
-        var formData = new FormData();
-        var file = input[0].files[0];
+        const formData = new FormData();
+        const file = input[0].files[0];
         formData.append("Filedata", file);
-        var t = file.type.split("/").pop().toLowerCase();
+        const t = file.type.split("/").pop().toLowerCase();
         if (
-            t != "jpeg" &&
-            t != "jpg" &&
-            t != "png" &&
-            t != "bmp" &&
-            t != "gif" 
+            t !== "jpeg" &&
+            t !== "jpg" &&
+            t !== "png" &&
+            t !== "bmp" &&
+            t !== "gif"
         ) {
             hint
                 .removeClass("d-none")
@@ -35,12 +35,11 @@ function validImgPost(input, img, hint, btn) {
             btn.attr("disabled", false);
             evt.stopPropagation();
             evt.preventDefault();
-            var files = evt.target.files;
-            var file = files[0];
-            var fileReader = new FileReader();
+            const files = evt.target.files;
+            const file = files[0];
+            const fileReader = new FileReader();
             fileReader.onload = function () {
-                var url = fileReader.result;
-                img[0].src = url;
+                img[0].src = fileReader.result;
             };
             // Read file asynchronously.
             fileReader.readAsDataURL(file); // fileReader.result -> URL.

@@ -1,16 +1,26 @@
-const clientPath = process.cwd();
-const formidable = require('formidable');
-const Articles = require('../mongoose_schema/schema');
-const fs = require('fs');
-const express = require('express');
-const app = express();
-const formatDate = require('../assets/formatDate');
-const multer = require("multer");
-const pathImgBlog = '../public/img/blog-img/';
-const noImagePath = '../public/img/blog-img/no-image.jpg';
-const upload = multer({
-    storage: multer.memoryStorage()
-}).single('imgPost');
+require('dotenv').config();
+
+const clientPath = process.cwd(),
+    formidable = require('formidable'),
+    Articles = require('../mongoose_schema/schema'),
+    fs = require('fs'),
+    express = require('express'),
+    app = express(),
+    formatDate = require('../assets/formatDate'),
+    multer = require("multer"),
+    pathImgBlog = '../public/img/blog-img/',
+    noImagePath = '../public/img/blog-img/no-image.jpg',
+    upload = multer({
+        storage: multer.memoryStorage()
+    }),
+    {S3Client, GetObjectCommand, PutObjectCommand} = require("@aws-sdk/client-s3"),
+    client = new S3Client({
+        credentials: {
+            accessKeyId: process.env.ACCESS_KEY_ID,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY,
+        },
+        region: process.env.REGION,
+    });
 
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/templates', express.static(__dirname + '/templates'));
@@ -42,7 +52,7 @@ module.exports.categoryId = (req, res, next) => {
             if (result.length > 0) {
                 let cardPost = result.map((post) => {
                     let postText;
-                    const imagePath = post?.imgPath ? `${pathImgBlog}${post.imgPath}` : `${pathImgBlog}/no-image.jpg`
+                    const imagePath = post?.imgURL ? post.imgURL : `${pathImgBlog}/no-image.jpg`
 
                     if (typeof post.text == "string" && post.text.length > 150) {
                         postText = post.text.substr(0, 150) + "...";
@@ -89,7 +99,7 @@ module.exports.categoryId = (req, res, next) => {
 };
 
 module.exports.singlePostId = (req, res, next) => {
-    fs.readFile(`${clientPath}/templates/single-post.html`, "utf8", (error, data) => {
+    fs.readFile(`${clientPath}/templates/single-post/single-post.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file single-post.html " + error);
             return res.status(400).type('text/html').send('<h1>Error read file single-post.html</h1>');
@@ -99,7 +109,7 @@ module.exports.singlePostId = (req, res, next) => {
                 console.log(err.stack)
                 next(err);
             } else {
-                const imagePath = result?.imgPath ? (pathImgBlog + result.imgPath) : noImagePath;
+                const imagePath = result?.imgURL ? result.imgURL : noImagePath;
                 data = data
                     .replace('{post_text}', result.text)
                     .replace('{date}', formatDate(result.date))
@@ -118,7 +128,7 @@ module.exports.getPost = (req, res, next) => {
     Articles.findById(req.params.id, (error, result) => {
         if (error) {
             console.log(`Article id ${req.params.id} is is missing. `, error);
-            return res.status(400).json({ error: `Article id ${req.params.id} is missing.` });
+            return res.status(400).json({error: `Article id ${req.params.id} is missing.`});
         }
         return res.status(200)
             .setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -156,7 +166,6 @@ module.exports.addPost = (req, res, next) => { // need remove img after delete a
             title: reqBody.titlePost,
             text: reqBody.textPost,
             date: reqBody.datePost,
-            // img: bodyImg,
             categories: JSON.parse(reqBody.tagsPost),
             imgPath: file.originalFilename,
         };
@@ -172,29 +181,6 @@ module.exports.addPost = (req, res, next) => { // need remove img after delete a
     });
 
     form.on('error', (err) => next(err));
-
-    // -------------------
-    // upload(req, res, function (error) {
-    //   if (error) {
-    //     console.log(err.stack);
-    //     next(err);
-    //   }
-    //   var bodyImg, buffer, fileType;
-    //   if (req.file) {
-    //     buffer = req.file.buffer;
-    //     fileType = req.file.mimetype;
-    //   } else {
-    //     var readFileimg = fs.readFileSync('./public/img/blog-img/no-image.jpg');
-    //     buffer = Buffer.from(readFileimg);
-    //     fileType = 'image/jpeg';
-    //   }
-    //   bodyImg = {
-    //     data: buffer,
-    //     contentType: fileType
-    //   };
-    //
-    // })
-    // -------------------
 };
 
 module.exports.getUpdatePostId = (req, res, next) => {
@@ -208,89 +194,111 @@ module.exports.getUpdatePostId = (req, res, next) => {
                 console.log(err.stack)
                 next(err);
             }
-            // console.log('Controller', result)
-            const imagePath = result?.imgPath ? (pathImgBlog + result?.imgPath) : noImagePath;
+
+            const imagePath = result?.imgURL ? result.imgURL : noImagePath;
             data = data
                 .replace('{id}', req.params.id)
                 .replace('{post_author}', result.author)
                 .replace('{post_title}', result.title)
                 .replace('{post_imgType}', result?.img?.contentType)
                 .replace('{post_img}', imagePath)
-                .replace('{old_path_img}', result?.imgPath ? result.imgPath : '')
+                .replace('{old_path_img}', result?.imgURL ? result.imgURL : '')
                 .replace('{post_date}', formatDate(result.date))
                 .replace('{post_tags}', result.categories.join())
                 .replace('{post_id}', result.id)
                 .replace('{post_text}', result.text);
-            res.status(200).type('text/html');
-            res.send(data);
+            res.status(200).type('text/html').send(data);
         });
     });
 };
 
-module.exports.updatePostId = (req, res) => { //change load img
-    let reqBody, updatePost;
+module.exports.updatePostId = async (req, res) => { //change load img
+    const reqBody = req.body;
+    const updatePost = {
+        author: reqBody.authorPost,
+        title: reqBody.titlePost,
+        text: reqBody.textPost,
+        date: reqBody.datePost,
+        categories: JSON.parse(reqBody.tagsPost),
+    };
+    try {
+        const file = req.file;
+        if (file) {
+            const params = {
+                Bucket: process.env.BUCKET_NAME,
+                Body: file.buffer,
+                Key: 'id_' + (new Date().getTime()) + '_' + file.originalname, // add post id instead of name
+                ContentType: file.mimetype,
+            };
+            const command = new PutObjectCommand(params);
+            const result = await client.send(command);
 
-    upload(req, res, (err) => {
-        if (err) {
-            console.log(err.stack)
-            next(err);
-        }
-        reqBody = req.body;
-        // reqBody = {
-        //     author: req.body.authorPost,
-        //     title: req.body.titlePost,
-        //     text: req.body.textPost,
-        //     date: req.body.datePost,
-        //     categories: JSON.parse(req.body.tagsPost)
-        // };
-        // if (req.file === undefined || req.file === true) {
-        //     updatePost = reqBody;
-        // } else {
-        //     var buffer = req.file.buffer;
-        //     finalImg = {
-        //         data: buffer,
-        //         contentType: req.file.mimetype
-        //     };
-        //     updatePost = reqBody;
-        //     updatePost.imgPath = finalImg;
-        // }
-    });
-    const form = new formidable.IncomingForm();
-    form.parse(req);
-    form.on('fileBegin', (name, file) => {
-        const blogImgPath = String.raw`${clientPath}/public/img/blog-img`.replace(/\\/g, "/");
-        if (!fs.existsSync(blogImgPath)) {
-            fs.mkdirSync(blogImgPath);
-        }
-        file.filepath = `${blogImgPath}/${file.originalFilename}`;
-    });
-
-    form.on('file', (name, file) => {
-        updatePost = {
-            author: reqBody.authorPost,
-            title: reqBody.titlePost,
-            text: reqBody.textPost,
-            date: reqBody.datePost,
-            // img: bodyImg,
-            categories: JSON.parse(reqBody.tagsPost),
-            imgPath: file.originalFilename,
-        };
-        if (reqBody.oldImg) {
-            fs.unlink(String.raw`${clientPath}/public/img/blog-img/${reqBody.oldImg}`.replace(/\\/g, "/"), (err) => {
-                if (err) {
-                    console.error(err)
-                }
-            })
+            if (result['$metadata'].httpStatusCode === 200) {
+                updatePost.imgURL = `https://${process.env.BUCKET_NAME}.s3.${process.env.REGION}.amazonaws.com/${command.input.Key}`;
+            } else {
+                return res.status(result['$metadata'].httpStatusCode || 400).send('Failed to upload image to S3 bucket');
+            }
         }
 
-        Articles.updateOne({_id: req.params.id}, updatePost, (err) => {
-            if (err) next(err);
+        Articles.updateOne({_id: req.params.id}, updatePost, (error) => {
+            if (error) {
+                return res.status(error?.status || 400).send('Error from MongoDB')
+            }
 
-            console.log("Update succsses Articles");
+            console.log("Update successes Articles");
             res.send('Post edited successfully')
         });
 
-    });
+    } catch (error) {
+        console.log('++++', error)
+        return res.status(error?.status || 400).send('Error from server')
+    }
+
+    // let reqBody, updatePost;
+
+    // upload(req, res, (err) => {
+    //     if (err) {
+    //         console.log(err.stack)
+    //         next(err);
+    //     }
+    //     reqBody = req.body;
+    // });
+    // const form = new formidable.IncomingForm();
+    // form.parse(req);
+    // form.on('fileBegin', (name, file) => {
+    //     const blogImgPath = String.raw`${clientPath}/public/img/blog-img`.replace(/\\/g, "/");
+    //     if (!fs.existsSync(blogImgPath)) {
+    //         fs.mkdirSync(blogImgPath);
+    //     }
+    //     file.filepath = `${blogImgPath}/${file.originalFilename}`;
+    // });
+    //
+    // form.on('file', (name, file) => {
+    //     updatePost = {
+    //         author: reqBody.authorPost,
+    //         title: reqBody.titlePost,
+    //         text: reqBody.textPost,
+    //         date: reqBody.datePost,
+    //         // imgURL:
+    //         categories: JSON.parse(reqBody.tagsPost),
+    //         imgPath: file.originalFilename,
+    //     };
+    //     if (reqBody.oldImg) {
+    //         fs.unlink(String.raw`${clientPath}/public/img/blog-img/${reqBody.oldImg}`.replace(/\\/g, "/"), (err) => {
+    //             if (err) {
+    //                 console.error(err)
+    //             }
+    //         })
+    //     }
+    //
+    //     Articles.updateOne({_id: req.params.id}, updatePost, (err) => {
+    //         if (err) next(err);
+    //
+    //         console.log("Update succsses Articles");
+    //         res.send('Post edited successfully')
+    //     });
+    //
+    // });
 };
 
 module.exports.delete = (req, res, next) => {

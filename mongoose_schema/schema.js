@@ -24,6 +24,9 @@ const articleScheme = new Schema({
     },
     imgPath: {
         type: String
+    },
+    imgURL: {
+      type: String
     }
 });
 

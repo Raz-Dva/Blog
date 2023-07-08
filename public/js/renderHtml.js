@@ -1,5 +1,5 @@
 let articles = [];
-let indexHtml = {};
+const indexHtml = {};
 indexHtml.cards = '';
 indexHtml.categories = '';
 indexHtml.slider = '';
@@ -7,6 +7,7 @@ indexHtml.featuredPost = '';
 indexHtml.mainPosts = `<div class="widget-title">
                         <h6>Main Posts</h6>
                       </div>`;
+const noImageLocalPath = '../public/img/blog-img/no-image.jpg'
 
 class RenderHTML {
     constructor() {
@@ -22,7 +23,7 @@ class RenderHTML {
             dataPost.text = post.text.substr(0, 150) + "...";
         } else dataPost.text = post.text;
         dataPost.date = new DateStr(post.date).formatDate();
-        dataPost.imgPath = post?.imgPath ? post.imgPath : 'no-image.jpg';
+        dataPost.imgPath = post?.imgURL ? post.imgURL : noImageLocalPath;
         dataPost.categories = post.categories.join("/");
         return dataPost;
     };
@@ -53,7 +54,7 @@ class RenderHTML {
                                 </button>
                                 <a href="/single-post/${post._id}" class="img_post">
                                   <img
-                                    src="../public/img/blog-img/${postData.imgPath}"
+                                    src="${postData.imgPath}"
                                     alt=""
                                   />
                                 </a>
@@ -75,7 +76,7 @@ class RenderHTML {
         indexHtml.featuredPost = `<div class="featured-post-area mb-50">
                                 <div class="post-thumbnail mb-30">
                                   <a href="/single-post/${post._id}"
-                                    ><img src="../public/img/blog-img/${postData.imgPath}" alt=""
+                                    ><img src="${postData.imgPath}" alt=""
                                   /></a>
                                 </div>
                                 <div class="featured-post-content">
@@ -96,7 +97,7 @@ class RenderHTML {
                             <div
                               class="slide-post-thumbnail h-100 bg-img"
                               style="
-                                background-image: url('../public/img/blog-img/${postData.imgPath}');
+                                background-image: url(${postData.imgPath});
                               "
                             ></div>
                             <div class="slide-post-content h-100 d-flex align-items-center">
@@ -105,7 +106,7 @@ class RenderHTML {
                                   ${postData.date}/${postData.categories}
                                 </p>
                                 <a
-                                  href="/single-post/${post._id}"
+                                  href="${post._id}"
                                   class="post-title"
                                   data-animation="fadeIn"
                                   data-delay="100ms"

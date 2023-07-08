@@ -9,7 +9,7 @@ function fetchPost(id) {
                     dataPost.text = post.text;
                 }
                 dataPost.date = new DateStr(post.date).formatDate();
-                dataPost.imgPath = post?.imgPath ? post.imgPath : 'no-image.jpg';
+                dataPost.imgPath = post?.imgURL ? post.imgURL : 'no-image.jpg';
                 dataPost.categories = post.categories.join("/");
                 return dataPost;
             })(post);
@@ -25,7 +25,7 @@ function fetchPost(id) {
                                 </button>
                                 <a href="/single-post/${post._id}" class="img_post">
                                   <img
-                                    src="../public/img/blog-img/${postData.imgPath}"
+                                    src="${postData.imgPath}"
                                     alt=""
                                   />
                                 </a>

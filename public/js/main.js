@@ -29,7 +29,7 @@ $(document).ready(function () {
     }
 
     ////// api fetch ///////
-    let rendering = () => {
+    const rendering = () => {
         let renderClass = new RenderHTML();
         ArtApi.fetch().then((backendArticles) => {
             articles = backendArticles.concat();
