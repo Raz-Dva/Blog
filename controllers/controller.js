@@ -1,19 +1,33 @@
-require('dotenv').config();
+import dotenv from  'dotenv';
+import formidable from 'formidable';
+import Articles from '../mongoose_schema/schema.js';
+import fs from 'fs';
+import express from 'express';
+import formatDate from '../assets/formatDate.js';
+import multer from 'multer';
+import { s3PutObject } from '../s3-bucket/s3.js';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const clientPath = process.cwd(),
-    formidable = require('formidable'),
-    Articles = require('../mongoose_schema/schema'),
-    fs = require('fs'),
-    express = require('express'),
+    // formidable = require('formidable'),
+    // Articles = require('../mongoose_schema/schema'),
+    // fs = require('fs'),
+    // express = require('express'),
     app = express(),
-    formatDate = require('../assets/formatDate'),
-    multer = require("multer"),
+    // formatDate = require('../assets/formatDate'),
+    // multer = require("multer"),
     pathImgBlog = '../public/img/blog-img/',
     noImagePath = '../public/img/blog-img/no-image.jpg',
     upload = multer({
         storage: multer.memoryStorage()
     }),
-    {S3Client, GetObjectCommand, PutObjectCommand} = require("@aws-sdk/client-s3"),
+    // { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3"),
     client = new S3Client({
         credentials: {
             accessKeyId: process.env.ACCESS_KEY_ID,
@@ -25,7 +39,7 @@ const clientPath = process.cwd(),
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/templates', express.static(__dirname + '/templates'));
 
-module.exports.articles = (req, res, next) => {
+const articles = (req, res, next) => {
     try {
         Articles.find({}, function (err, result) {
             if (err) next(err);
@@ -37,7 +51,7 @@ module.exports.articles = (req, res, next) => {
     }
 };
 
-module.exports.categoryId = (req, res, next) => {
+const categoryId = (req, res, next) => {
     fs.readFile(`${clientPath}/templates/categories/categories.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file categories.html " + error);
@@ -98,7 +112,7 @@ module.exports.categoryId = (req, res, next) => {
     });
 };
 
-module.exports.singlePostId = (req, res, next) => {
+const singlePostId = (req, res, next) => {
     fs.readFile(`${clientPath}/templates/single-post/single-post.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file single-post.html " + error);
@@ -124,7 +138,7 @@ module.exports.singlePostId = (req, res, next) => {
     });
 };
 
-module.exports.getPost = (req, res, next) => {
+const getPost = (req, res, next) => {
     Articles.findById(req.params.id, (error, result) => {
         if (error) {
             console.log(`Article id ${req.params.id} is is missing. `, error);
@@ -138,20 +152,20 @@ module.exports.getPost = (req, res, next) => {
     });
 };
 
-module.exports.getAddPost = (req, res) => {
+export const getAddPost = (req, res) => {
     res.sendFile(`${clientPath}/templates/add-post/add-post.html`)
 };
 
-module.exports.addPost = (req, res, next) => { // need remove img after delete article
+const addPost = (req, res, next) => { // need remove img after delete article
     let reqBody;
     upload(req, res, (err) => {
-        if (err) nexn(err);
+
         reqBody = req.body;
     });
 
     const form = new formidable.IncomingForm();
 
-    form.parse(req);
+    // form.parse(req);
     form.on('fileBegin', (name, file) => {
         const blogImgPath = String.raw`${clientPath}/public/img/blog-img`.replace(/\\/g, "/");
         if (!fs.existsSync(blogImgPath)) {
@@ -179,11 +193,9 @@ module.exports.addPost = (req, res, next) => { // need remove img after delete a
             }
         });
     });
-
-    form.on('error', (err) => next(err));
 };
 
-module.exports.getUpdatePostId = (req, res, next) => {
+const getUpdatePostId = (req, res, next) => {
     fs.readFile(`${clientPath}/templates/update-post/update-post.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file update-post.html " + error);
@@ -212,7 +224,7 @@ module.exports.getUpdatePostId = (req, res, next) => {
     });
 };
 
-module.exports.updatePostId = async (req, res) => { //change load img
+const updatePostId = (req, res) => {
     const reqBody = req.body;
     const updatePost = {
         author: reqBody.authorPost,
@@ -221,20 +233,22 @@ module.exports.updatePostId = async (req, res) => { //change load img
         date: reqBody.datePost,
         categories: JSON.parse(reqBody.tagsPost),
     };
-    try {
-        const file = req.file;
-        if (file) {
-            const params = {
-                Bucket: process.env.BUCKET_NAME,
-                Body: file.buffer,
-                Key: 'id_' + (new Date().getTime()) + '_' + file.originalname, // add post id instead of name
-                ContentType: file.mimetype,
-            };
-            const command = new PutObjectCommand(params);
-            const result = await client.send(command);
+    const file = req.file;
 
-            if (result['$metadata'].httpStatusCode === 200) {
-                updatePost.imgURL = `https://${process.env.BUCKET_NAME}.s3.${process.env.REGION}.amazonaws.com/${command.input.Key}`;
+    try {
+        if (file) {
+            // const params = {
+            //     Bucket: process.env.BUCKET_NAME,
+            //     Body: file.buffer,
+            //     Key: 'id_' + (new Date().getTime()) + '_' + file.originalname,
+            //     ContentType: file.mimetype,
+            // };
+            // const command = new PutObjectCommand(params);
+            // const result = await client.send(command);
+            const imgURL = s3PutObject(file);
+
+            if (imgURL) {
+                updatePost.imgURL = imgURL;
             } else {
                 return res.status(result['$metadata'].httpStatusCode || 400).send('Failed to upload image to S3 bucket');
             }
@@ -253,55 +267,9 @@ module.exports.updatePostId = async (req, res) => { //change load img
         console.log('++++', error)
         return res.status(error?.status || 400).send('Error from server')
     }
-
-    // let reqBody, updatePost;
-
-    // upload(req, res, (err) => {
-    //     if (err) {
-    //         console.log(err.stack)
-    //         next(err);
-    //     }
-    //     reqBody = req.body;
-    // });
-    // const form = new formidable.IncomingForm();
-    // form.parse(req);
-    // form.on('fileBegin', (name, file) => {
-    //     const blogImgPath = String.raw`${clientPath}/public/img/blog-img`.replace(/\\/g, "/");
-    //     if (!fs.existsSync(blogImgPath)) {
-    //         fs.mkdirSync(blogImgPath);
-    //     }
-    //     file.filepath = `${blogImgPath}/${file.originalFilename}`;
-    // });
-    //
-    // form.on('file', (name, file) => {
-    //     updatePost = {
-    //         author: reqBody.authorPost,
-    //         title: reqBody.titlePost,
-    //         text: reqBody.textPost,
-    //         date: reqBody.datePost,
-    //         // imgURL:
-    //         categories: JSON.parse(reqBody.tagsPost),
-    //         imgPath: file.originalFilename,
-    //     };
-    //     if (reqBody.oldImg) {
-    //         fs.unlink(String.raw`${clientPath}/public/img/blog-img/${reqBody.oldImg}`.replace(/\\/g, "/"), (err) => {
-    //             if (err) {
-    //                 console.error(err)
-    //             }
-    //         })
-    //     }
-    //
-    //     Articles.updateOne({_id: req.params.id}, updatePost, (err) => {
-    //         if (err) next(err);
-    //
-    //         console.log("Update succsses Articles");
-    //         res.send('Post edited successfully')
-    //     });
-    //
-    // });
 };
 
-module.exports.delete = (req, res, next) => {
+const deletePost = (req, res, next) => {
     Articles.findOneAndDelete({_id: req.params.id}, function (err, result) {
         if (err || result == null) {
             console.log('Error /delete ' + err);
@@ -310,3 +278,7 @@ module.exports.delete = (req, res, next) => {
         res.status(200).json(result)
     });
 };
+
+export default { articles, categoryId, singlePostId, getPost, getAddPost, addPost, getUpdatePostId, updatePostId, deletePost };
+
+

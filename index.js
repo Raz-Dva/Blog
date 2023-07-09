@@ -1,13 +1,28 @@
-const http = require('http'),
-    express = require('express'),
-    app = express(),
-    server = http.createServer(app),
-    mongoose = require('mongoose'),
-    port = 5000,
-    router = require('./router/routes'),
-    controller = require('./controllers/controller');
+// const http = require('http'),
+//     express = require('express'),
+    // server = http.createServer(app),
+    // mongoose = require('mongoose'),
+    // router = require('./router/routes'),
+    // controller = require('./controllers/controller');
 
-require('dotenv').config();
+// require('dotenv').config();
+
+import http from 'http';
+import express from 'express';
+import mongoose from 'mongoose';
+import router from './router/routes.js';
+import controller from './controllers/controller.js';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const app = express(),
+    server = http.createServer(app),
+    port = 5000;
 
 //---------------- express static
 app.use(express.static(__dirname + "/templates"));
@@ -18,7 +33,7 @@ app.use(express.json());
 
 app.use('/', router);
 
-app.delete('/delete/:id', controller.delete);
+app.delete('/delete/:id', controller.deletePost);
 //---------------- error and 404
 app.use((err, req, res, next) => {
     const isNotFound = ~err.message.indexOf('not found')
