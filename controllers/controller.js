@@ -234,10 +234,12 @@ const updatePostId = async (req, res) => {
         date: reqBody.datePost,
         categories: JSON.parse(reqBody.tagsPost),
     };
+    const idTimeOut = setTimeout(() => res.send("There was an error with the upstream service!"), 5000)
+
 
     if (file) {
         const result = await s3PutObject(file);
-
+        clearTimeout(idTimeOut)
         if (result) {
             updatePost.imgURL = result;
         } else {
