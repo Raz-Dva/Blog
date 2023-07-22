@@ -1,9 +1,15 @@
 import formatDate from "../assets/formatDate.js";
 
 const getPosts = (id) => {
-    fetch(`/post/${id}`, { method: "get" })
-        .then((res) => res.json())
+    fetch(`/post/${id}`, { method: "get", cache: "no-store" })
+        .then((res) => {
+            console.log(...res.headers)
+            console.log(res.ok);
+            console.log(res.status);
+            return res.json()
+        })
         .then((post) => {
+            console.log(post)
                 const dataPost = {};
                 if (typeof post.text === "string" && post.text.length > 150) {
                     dataPost.text = post.text.substr(0, 150) + "...";
