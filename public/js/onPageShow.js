@@ -1,20 +1,18 @@
+import formatDate from "../assets/formatDate.js";
+
 const getPosts = (id) => {
     fetch(`/post/${id}`, { method: "get" })
         .then((res) => res.json())
         .then((post) => {
-            const postData = ((post) => {
                 const dataPost = {};
                 if (typeof post.text === "string" && post.text.length > 150) {
                     dataPost.text = post.text.substr(0, 150) + "...";
                 } else {
                     dataPost.text = post.text;
                 }
-                dataPost.date = new DateStr(post.date).formatDate();
+                dataPost.date = formatDate(post.date);
                 dataPost.imgPath = post?.imgURL ? post.imgURL : '../public/img/blog-img/no-image.jpg';
                 dataPost.categories = post.categories.join("/");
-                return dataPost;
-            })(post);
-
 
             $(`div[data-id='${id}']`).html(`<div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
@@ -26,18 +24,18 @@ const getPosts = (id) => {
                                 </button>
                                 <a href="/single-post/${post._id}" class="img_post">
                                   <img
-                                    src="${postData.imgPath}"
+                                    src="${dataPost.imgPath}"
                                     alt=""
                                   />
                                 </a>
                               </div>
                               <div class="post-content">
-                                <p class="post-date">${postData.date}</p>
-                                <p class="post-date">${postData.categories}</p>
+                                <p class="post-date">${dataPost.date}</p>
+                                <p class="post-date">${dataPost.categories}</p>
                                 <a href="/single-post/${post._id}" class="post-title">
                                   <h4>${post.title}</h4>
                                 </a>
-                                <p class="post-excerpt">${postData.text}</p>
+                                <p class="post-excerpt">${dataPost.text}</p>
                               </div>
                               <hr />
                               <div class="author-comments"><span>by </span>${post.author}</div>
