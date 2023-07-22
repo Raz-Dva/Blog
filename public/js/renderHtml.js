@@ -1,20 +1,21 @@
-let articles = [];
-const indexHtml = {};
-indexHtml.cards = '';
-indexHtml.categories = '';
-indexHtml.slider = '';
-indexHtml.featuredPost = '';
-indexHtml.mainPosts = `<div class="widget-title">
-                        <h6>Main Posts</h6>
-                      </div>`;
-const noImageLocalPath = '../public/img/blog-img/no-image.jpg'
+import formatDate from '../assets/formatDate.js';
 
-class RenderHTML {
+export default class RenderHTML {
+    indexHtml = {};
+    noImageLocalPath = '../public/img/blog-img/no-image.jpg';
+
     constructor() {
         this.categories = '';
         this.randomPost = Math.floor(Math.random() * 4);
         this.Set = new Set();
         this.offset = 0;
+        this.indexHtml.cards = '';
+        this.indexHtml.categories = '';
+        this.indexHtml.slider = '';
+        this.indexHtml.featuredPost = '';
+        this.indexHtml.mainPosts = `<div class="widget-title">
+                        <h6>Main Posts</h6>
+                      </div>`;
     };
 
     getDataPost(post) {
@@ -22,28 +23,29 @@ class RenderHTML {
         if (typeof post.text === "string" && post.text.length > 150) {
             dataPost.text = post.text.substr(0, 150) + "...";
         } else dataPost.text = post.text;
-        dataPost.date = new DateStr(post.date).formatDate();
-        dataPost.imgPath = post?.imgURL ? post.imgURL : noImageLocalPath;
+
+        dataPost.date = formatDate(post.date);
+        dataPost.imgPath = post?.imgURL ? post.imgURL : this.noImageLocalPath;
         dataPost.categories = post.categories.join("/");
         return dataPost;
     };
 
     getCategories(post) {
-        let arrCategories = post.categories;
-        const len = arrCategories.length;
-        for (let i = 0; i < len; i++) {
-            let val = arrCategories[i];
-            if (this.Set.has(val)) {
+        let categories = post.categories;
+        const categoriesAmount = categories.length;
+        for (let i = 0; i < categoriesAmount; i++) {
+            let categoryName = categories[i];
+            if (this.Set.has(categoryName)) {
                 this.offset++;
             } else {
-                this.Set.add(val);
-                indexHtml.categories += `<li><a href="/categories/:${val}">${val}</a></li>`;
+                this.Set.add(categoryName);
+                this.indexHtml.categories += `<li><a href="/categories/:${categoryName}">${categoryName}</a></li>`;
             }
         }
     };
 
     getCards(post, postData) {
-        indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
+        this.indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
                             <div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
                                 <a href="/update-post/${post._id}" class="edit_post"
@@ -60,7 +62,8 @@ class RenderHTML {
                                 </a>
                               </div>
                               <div class="post-content">
-                                <p class="post-date">${postData.date}/${postData.categories}</p>
+                                <p class="post-date">${postData.date}</p>
+                                <p class="post-date">${postData.categories}</p>
                                 <a href="/single-post/${post._id}" class="post-title">
                                   <h4>${post.title}</h4>
                                 </a>
@@ -73,14 +76,15 @@ class RenderHTML {
     };
 
     showRandomPost(post, postData) {
-        indexHtml.featuredPost = `<div class="featured-post-area mb-50">
+        this.indexHtml.featuredPost = `<div class="featured-post-area mb-50">
                                 <div class="post-thumbnail mb-30">
                                   <a href="/single-post/${post._id}"
                                     ><img src="${postData.imgPath}" alt=""
                                   /></a>
                                 </div>
                                 <div class="featured-post-content">
-                                  <p class="post-date">${postData.date}/${postData.categories}</p>
+                                   <p class="post-date">${postData.date}</p>
+                                   <p class="post-date">${postData.categories}</p>
                                   <a href="/single-post/${post._id}" class="post-title">
                                     <h2>${post.title}</h2>
                                   </a>
@@ -93,7 +97,7 @@ class RenderHTML {
     };
 
     getSlider(post, postData) {
-        indexHtml.slider += `<div class="single-hero-post d-flex flex-wrap">
+        this.indexHtml.slider += `<div class="single-hero-post d-flex flex-wrap">
                             <div
                               class="slide-post-thumbnail h-100 bg-img"
                               style="
@@ -103,8 +107,9 @@ class RenderHTML {
                             <div class="slide-post-content h-100 d-flex align-items-center">
                               <div class="slide-post-text">
                                 <p class="post-date" data-animation="fadeIn" data-delay="100ms">
-                                  ${postData.date}/${postData.categories}
+                                  ${postData.date}
                                 </p>
+                                <p class="post-date">${postData.categories}</p>
                                 <a
                                   href="${post._id}"
                                   class="post-title"
@@ -121,8 +126,8 @@ class RenderHTML {
                                   class="btn nikki-btn"
                                   data-animation="fadeIn"
                                   data-delay="100ms"
-                                  >Read More</a
-                                >
+                                  >Read More
+                                </a>
                               </div>
                             </div>
                           </div>`;

@@ -11,7 +11,6 @@ import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
 import router from './router/routes.js';
-import controller from './controllers/controller.js';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -29,11 +28,10 @@ app.use(express.static(__dirname + "/templates"));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/templates', express.static(__dirname + '/templates'));
 app.use(express.json());
-// ------------  routes --------
 
+// ------------  routes --------
 app.use('/', router);
 
-app.delete('/delete/:id', controller.deletePost);
 //---------------- error and 404
 app.use((err, req, res, next) => {
     const isNotFound = ~err.message.indexOf('not found')
@@ -53,7 +51,7 @@ app.get('*', function (req, res) {
 mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.qy6hg4h.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) return console.log('error connect mongoose DB' + err);
 
-    server.on('error', function (e) {
+    server.on('error',  (e) => {
         console.log('Mongoose default connection error: ' + err);
     });
 

@@ -1587,6 +1587,9 @@ img {
 .single-widget-area .single-latest-post:last-child {
   margin-bottom: 0;
 }
+.single-widget-area .post-thumb .post-date {
+  color: #c79d53;
+}
 .single-widget-area .single-latest-post .post-thumb p {
   line-height: 1;
   margin-top: 10px;
@@ -1726,8 +1729,10 @@ img {
   border-bottom: none;
 }
 .post-img {
-  display: block;
-  max-height: 154px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 115px;
   overflow: hidden;
 }
 .row-contents .post-sidebar-area {
@@ -1821,7 +1826,6 @@ img {
 .single-post-details-area .post-content .post-date {
   font-weight: 500;
   font-size: 14px;
-  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: #d1bb95;

@@ -9,11 +9,12 @@ const router = express.Router(),
 
 router.get('/articles', controller.articles);
 router.get('/categories/:id', controller.categoryId);
-router.get('/single-post/:id', controller.singlePostId);
-router.get('/post/:id', controller.getPost);
-router.get('/add-post', controller.getAddPost);
-router.post('/add-post', controller.addPost);
+router.get('/single-post/:id', controller.singlePost);
+router.get('/post/:id', controller.getPostById);
+router.get('/add-post', controller.getAddPostPage);
+router.post('/add-post', upload.single('imgPost'), controller.addPost);
 router.get('/update-post/:id', controller.getUpdatePostId);
-router.post('/update-post/:id', upload.single('imgPost'), controller.updatePostId);
+router.put('/update-post/:id', upload.single('imgPost'), controller.updatePostId);
+router.delete('/delete/:id', controller.deletePost);
 
 export default router;

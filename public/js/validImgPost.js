@@ -1,5 +1,5 @@
-function validImgPost(input, img, hint, btn) {
-    function validateImage() {
+export const validImgPost = (input, img, hint, btn) => {
+    const validateImage = () => {
         const formData = new FormData();
         const file = input[0].files[0];
         formData.append("Filedata", file);
@@ -29,19 +29,21 @@ function validImgPost(input, img, hint, btn) {
         }
         return true;
     }
+
     input.change(function (evt) {
         if (validateImage()) {
             hint.addClass("d-none");
             btn.attr("disabled", false);
             evt.stopPropagation();
             evt.preventDefault();
+
             const files = evt.target.files;
             const file = files[0];
             const fileReader = new FileReader();
+
             fileReader.onload = function () {
                 img[0].src = fileReader.result;
             };
-            // Read file asynchronously.
             fileReader.readAsDataURL(file); // fileReader.result -> URL.
         }
     });

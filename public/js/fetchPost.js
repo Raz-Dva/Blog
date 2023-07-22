@@ -1,15 +1,17 @@
-function fetchPost(btn, hint, tags) {
+export const fetchPost = (btn, hint, tags, method) => {
     const form = $("#form");
     const formData = new FormData(form[0]);
+    const topMarginHeader = 90;
 
     formData.delete('tagsPost');
     formData.append('tagsPost', JSON.stringify(tags));
-    const val1 = formData.get('textPost');
-    const val = formData.get('imgPost');
 
     for (let pair of formData.entries()) {
         if (!pair[1] && pair[0] !== 'oldImg') {
-            $(`.form-control[name=${pair[0]}]`).addClass('is-invalid')
+            $(`.form-control[name=${pair[0]}]`).addClass('is-invalid');
+            const offsetTopInput = Math.round($('.is-invalid').offset().top) - topMarginHeader;
+
+            $('html, body').animate({scrollTop: offsetTopInput}, 200);
             return false
 
         } else {
@@ -21,7 +23,7 @@ function fetchPost(btn, hint, tags) {
     btn.attr("disabled", true);
 
     fetch(form.attr("action"), {
-        method: "POST",
+        method: method,
         body: formData,
     })
         .then((res) => {
@@ -40,7 +42,9 @@ function fetchPost(btn, hint, tags) {
                 });
             } else {
                 res.text().then((text) => {
-                    hint.removeClass("d-none").html(text);
+                    hint
+                        .removeClass("d-none text-danger")
+                        .addClass("text-danger").html(text);
                 });
             }
         })

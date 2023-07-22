@@ -1,5 +1,6 @@
-function fetchPost(id) {
-    fetch(`/post/${id}`, {method: "get"}).then((res) => res.json())
+const getPosts = (id) => {
+    fetch(`/post/${id}`, { method: "get" })
+        .then((res) => res.json())
         .then((post) => {
             const postData = ((post) => {
                 const dataPost = {};
@@ -9,7 +10,7 @@ function fetchPost(id) {
                     dataPost.text = post.text;
                 }
                 dataPost.date = new DateStr(post.date).formatDate();
-                dataPost.imgPath = post?.imgURL ? post.imgURL : 'no-image.jpg';
+                dataPost.imgPath = post?.imgURL ? post.imgURL : '../public/img/blog-img/no-image.jpg';
                 dataPost.categories = post.categories.join("/");
                 return dataPost;
             })(post);
@@ -31,7 +32,8 @@ function fetchPost(id) {
                                 </a>
                               </div>
                               <div class="post-content">
-                                <p class="post-date">${postData.date}/${postData.categories}</p>
+                                <p class="post-date">${postData.date}</p>
+                                <p class="post-date">${postData.categories}</p>
                                 <a href="/single-post/${post._id}" class="post-title">
                                   <h4>${post.title}</h4>
                                 </a>
@@ -57,6 +59,7 @@ window.addEventListener("pageshow", function (event) {
         (typeof window.performance != "undefined" &&
             window.performance.navigation.type === 2);
     if (historyTraversal && updatedPostId && fromPageUpdate && fromPageUpdate.startsWith('/update-post/')) {
-        fetchPost(updatedPostId)
+        getPosts(updatedPostId)
     }
 });
+
