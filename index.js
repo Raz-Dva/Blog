@@ -1,12 +1,3 @@
-// const http = require('http'),
-//     express = require('express'),
-    // server = http.createServer(app),
-    // mongoose = require('mongoose'),
-    // router = require('./router/routes'),
-    // controller = require('./controllers/controller');
-
-// require('dotenv').config();
-
 import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
@@ -46,13 +37,13 @@ app.get('*', function (req, res) {
     res.status(404).type('text/html');
     res.send("<h1> Not found 404</h1>"); // add page not found
 });
+
 // ------------  mongoose --------
+mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.qy6hg4h.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (error) => {
+    if (error) return console.log('error connect mongoose DB' + error);
 
-mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.qy6hg4h.mongodb.net/' + process.env.DB_NAME + '?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
-    if (err) return console.log('error connect mongoose DB' + err);
-
-    server.on('error',  (e) => {
-        console.log('Mongoose default connection error: ' + err);
+    server.on('error',  (error) => {
+        console.log('Mongoose default connection error: ' + error);
     });
 
     server.listen(process.env.PORT || port, () => {

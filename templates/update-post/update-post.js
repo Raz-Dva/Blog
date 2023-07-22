@@ -21,7 +21,7 @@ previewer.one('load', () => {
     }
 });
 
-tagsInput.on("beforeItemAdd", (event) => {
+tagsInput.on("beforeItemAdd", () => {
     if (tagsArr.length > 2) {
         let textInput = tagsArr[tagsArr.length - 1];
         tagsInput.tagsinput("remove", textInput, {preventPost: true});

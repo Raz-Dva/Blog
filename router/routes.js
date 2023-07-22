@@ -3,9 +3,7 @@ import controller from '../controllers/controller.js';
 import multer from 'multer';
 
 const router = express.Router(),
-    // controller = require('../controllers/controller'),
-    // multer = require('multer'),
-    upload = multer({ storage: multer.memoryStorage()});
+      upload = multer({ storage: multer.memoryStorage()});
 
 router.get('/articles', controller.articles);
 router.get('/categories/:id', controller.categoryId);
