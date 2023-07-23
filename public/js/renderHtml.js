@@ -6,7 +6,7 @@ export default class RenderHTML {
 
     constructor() {
         this.categories = '';
-        this.randomPost = Math.floor(Math.random() * 4);
+        this.randomPost = Math.floor( Math.random() * 4 );
         this.Set = new Set();
         this.offset = 0;
         this.indexHtml.cards = '';
@@ -16,35 +16,37 @@ export default class RenderHTML {
         this.indexHtml.mainPosts = `<div class="widget-title">
                         <h6>Main Posts</h6>
                       </div>`;
-    };
+    }
 
-    getDataPost(post) {
+    getDataPost( post ) {
         const dataPost = {};
-        if (typeof post.text === "string" && post.text.length > 150) {
-            dataPost.text = post.text.substr(0, 150) + "...";
-        } else dataPost.text = post.text;
+        if ( typeof post.text === 'string' && post.text.length > 150 ) {
+            dataPost.text = post.text.substr( 0, 150 ) + '...';
+        } else {
+            dataPost.text = post.text;
+        }
 
-        dataPost.date = formatDate(post.date);
+        dataPost.date = formatDate( post.date );
         dataPost.imgPath = post?.imgURL ? post.imgURL : this.noImageLocalPath;
-        dataPost.categories = post.categories.join("/");
+        dataPost.categories = post.categories.join( '/' );
         return dataPost;
-    };
+    }
 
-    getCategories(post) {
+    getCategories( post ) {
         let categories = post.categories;
         const categoriesAmount = categories.length;
-        for (let i = 0; i < categoriesAmount; i++) {
-            let categoryName = categories[i];
-            if (this.Set.has(categoryName)) {
+        for ( let i = 0; i < categoriesAmount; i++ ) {
+            let categoryName = categories[ i ];
+            if ( this.Set.has( categoryName ) ) {
                 this.offset++;
             } else {
-                this.Set.add(categoryName);
+                this.Set.add( categoryName );
                 this.indexHtml.categories += `<li><a href="/categories/:${categoryName}">${categoryName}</a></li>`;
             }
         }
-    };
+    }
 
-    getCards(post, postData) {
+    getCards( post, postData ) {
         this.indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
                             <div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
@@ -73,9 +75,9 @@ export default class RenderHTML {
                               <div class="author-comments"><span>by </span>${post.author}</div>
                             </div>
                           </div>`;
-    };
+    }
 
-    showRandomPost(post, postData) {
+    showRandomPost( post, postData ) {
         this.indexHtml.featuredPost = `<div class="featured-post-area mb-50">
                                 <div class="post-thumbnail mb-30">
                                   <a href="/single-post/${post._id}"
@@ -94,9 +96,9 @@ export default class RenderHTML {
                                   <div class="author-comments"><span>by </span>${post.author}</div>
                                 </div>
                               </div>`;
-    };
+    }
 
-    getSlider(post, postData) {
+    getSlider( post, postData ) {
         this.indexHtml.slider += `<div class="single-hero-post d-flex flex-wrap">
                             <div
                               class="slide-post-thumbnail h-100 bg-img"

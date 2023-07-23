@@ -35,7 +35,7 @@ const clientPath = process.cwd(),
 // });
 
 app.use('/public', express.static(__dirname + '/public'));
-app.use('/templates', express.static(__dirname + '/templates'));
+// app.use('/templates', express.static(__dirname + '/templates'));
 
 const articles = (req, res, next) => {
     try {
@@ -50,7 +50,7 @@ const articles = (req, res, next) => {
 };
 
 const categoryId = (req, res, next) => {
-    fs.readFile(`${clientPath}/templates/categories/categories.html`, "utf8", (error, data) => {
+    fs.readFile(`${clientPath}/public/templates/categories/categories.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file categories.html " + error);
             return res.status(400).type('text/html').send('<h1>Error read file  categories.html</h1>');
@@ -110,7 +110,7 @@ const categoryId = (req, res, next) => {
 };
 
 const singlePost = (req, res, next) => {
-    fs.readFile(`${clientPath}/templates/single-post/single-post.html`, "utf8", (error, data) => {
+    fs.readFile(`${clientPath}/public/templates/single-post/single-post.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file single-post.html " + error);
             return res.status(400).type('text/html').send('<h1>Error read file single-post.html</h1>');
@@ -150,7 +150,7 @@ const getPostById = (req, res) => {
 };
 
 const getAddPostPage = (req, res) => {
-    res.sendFile(`${clientPath}/templates/add-post/add-post.html`)
+    res.sendFile(`${clientPath}/public/templates/add-post/add-post.html`)
 };
 
 const addPost = async (req, res) => {
@@ -196,7 +196,7 @@ const addPost = async (req, res) => {
 };
 
 const getUpdatePostId = (req, res, next) => {
-    fs.readFile(`${clientPath}/templates/update-post/update-post.html`, "utf8", (error, data) => {
+    fs.readFile(`${clientPath}/public/templates/update-post/update-post.html`, "utf8", (error, data) => {
         if (error) {
             console.log("Error read file update-post.html " + error);
             return res.status(400).type('text/html').send('<h1>Error read file update-postaf.html</h1>');

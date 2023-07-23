@@ -15,9 +15,8 @@ const app = express(),
     port = 5000;
 
 //---------------- express static
-app.use(express.static(__dirname + "/templates"));
-app.use('/public', express.static(__dirname + '/public'));
-app.use('/templates', express.static(__dirname + '/templates'));
+app.use(express.static(__dirname));
+app.use(express.static(__dirname + '/public/templates'));
 app.use(express.json());
 
 // ------------  routes --------
