@@ -17,7 +17,7 @@ const app = express(),
 //---------------- express static
 app.use(express.static(__dirname));
 app.use('/',express.static(__dirname + '/public/templates'));
-
+app.use('/public',express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public/templates'));
 app.use(express.json());
 
