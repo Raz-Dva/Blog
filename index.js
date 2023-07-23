@@ -16,6 +16,8 @@ const app = express(),
 
 //---------------- express static
 app.use(express.static(__dirname));
+app.use('/',express.static(__dirname + '/public/templates'));
+
 app.use(express.static(__dirname + '/public/templates'));
 app.use(express.json());
 
@@ -34,7 +36,7 @@ app.use((err, req, res, next) => {
 });
 app.get('*', function (req, res) {
     res.status(404).type('text/html');
-    res.send("<h1> Not found 404</h1>"); // add page not found
+    res.send("<h2> Not found 404</h2>"); // add page not found
 });
 
 // ------------  mongoose --------
