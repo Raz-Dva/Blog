@@ -1,11 +1,11 @@
 export const fetchPost = ( btn, hint, tags, method ) => {
-    console.log(tags)
+    const tagsCollection = tags?.itemsArray ? tags.itemsArray : tags;
     const form = $( '#form' );
     const formData = new FormData( form[ 0 ] );
     const topMarginHeader = 90;
 
     formData.delete( 'tagsPost' );
-    formData.append( 'tagsPost', JSON.stringify( tags ) );
+    formData.append( 'tagsPost', JSON.stringify( tagsCollection ) );
 
     for ( const pair of formData.entries() ) {
         if ( !pair[ 1 ] && pair[ 0 ] !== 'oldImg' ) {

@@ -193,7 +193,7 @@ const addPost = async( req, res ) => {
     }
 };
 
-const getUpdatePostId = ( req, res, next ) => {
+const getUpdatePost = ( req, res, next ) => {
     fs.readFile(
         `${clientPath}/public/templates/update-post/update-post.html`,
         'utf8',
@@ -277,7 +277,7 @@ export default {
     getPostById,
     getAddPostPage,
     addPost,
-    getUpdatePostId,
+    getUpdatePostId: getUpdatePost,
     updatePostId: updatePostById,
     deletePost
 };
