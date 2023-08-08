@@ -7,7 +7,7 @@ fetch( '/articles', { method: 'get' } )
     } )
     .then( ( data ) => {
         if ( data.length > 0 ) {
-            let renderer = new RenderHTML();
+            const renderer = new RenderHTML();
             data.forEach( ( item ) => {
                 renderer.getCategories( item );
             } );

@@ -12,11 +12,11 @@ const btnSend = $( '#btn_send' ),
     hintError = $( '#hint_err' ),
     hintSuccesses = $( '#hint_successes' ),
     tagsInput = $( '#input-tags' ),
-    tagsArr = tagsInput.tagsinput( 'items' ).itemsArray;
+    tagsArr = tagsInput.tagsinput( 'items' );
 
 tagsInput.on( 'beforeItemAdd', () => {
     if ( tagsArr.length > 2 ) {
-        let textInput = tagsArr[ tagsArr.length - 1 ];
+        const textInput = tagsArr[ tagsArr.length - 1 ];
         tagsInput.tagsinput( 'remove', textInput, { preventPost: true } );
     }
 } );

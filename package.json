@@ -8,8 +8,8 @@
   },
   "type": "module",
   "scripts": {
-    "lint": "eslint ./public/**/*.js",
-    "lint:fix": "eslint ./public/**/*.js --fix",
+    "lint": "eslint ./public/**/*.js ./public/**/*.html ./controllers/**/* ./router/**/* ./index.js",
+    "lint:fix": "eslint ./public/**/*.js ./controllers/**/* ./router/**/* ./index.js --fix",
     "start": "node index",
     "dev": "nodemon app"
   },
@@ -27,8 +27,11 @@
     "multer": "^1.4.2"
   },
   "devDependencies": {
+    "@html-eslint/eslint-plugin": "^0.19.1",
+    "@html-eslint/parser": "^0.19.1",
     "eslint": "^8.45.0",
     "eslint-config-jquery": "^3.0.0",
+    "eslint-plugin-html": "^7.1.0",
     "nodemon": "^2.0.14"
   }
 }

@@ -3,20 +3,36 @@ module.exports = {
         "public/js/bootstrap/**/*",
         "public/js/jquery/**/*",
         "public/js/plugins/**/*",
-        "public/js/active.js",
     ],
     env: {
         browser: true,
+        node: true,
         es2021: true,
         jquery: true,
     },
-    extends: ["eslint:recommended", "jquery"],
+    extends: ["eslint:recommended"],
+    plugins: [ "html", "@html-eslint" ],
+    overrides: [
+        {
+            files: ["*.html"],
+            parser: "@html-eslint/parser",
+            extends: ["plugin:@html-eslint/recommended"],
+            rules: {
+                "@html-eslint/indent": ["error", 2],
+                "@html-eslint/require-doctype": "off",
+            },
+        },
+    ],
     parserOptions: {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
     rules: {
         indent: ['error', 4],
-        quotes: ['error', 'single']
+        quotes: ['error', 'single'],
+        "prefer-const": ["error", {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+        }]
     },
 }

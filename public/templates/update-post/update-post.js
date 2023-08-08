@@ -8,8 +8,8 @@ const inputFile = $( '#input-file' ),
     btnSend = $( '#btn_send' ),
     tagsInput = $( '#input-tags' ),
     loader = $( '#loader' ),
-    hintSuccesses = $( '#hint_successes' );
-let tagsArr = tagsInput.tagsinput( 'items' ).itemsArray;
+    hintSuccesses = $( '#hint_successes' ),
+    tagsArr = tagsInput.tagsinput( 'items' );
 
 previewer.one( 'load', () => {
     loader.css( 'display', 'none' );
@@ -21,7 +21,7 @@ previewer.one( 'load', () => {
 
 tagsInput.on( 'beforeItemAdd', () => {
     if ( tagsArr.length > 2 ) {
-        let textInput = tagsArr[ tagsArr.length - 1 ];
+        const textInput = tagsArr[ tagsArr.length - 1 ];
         tagsInput.tagsinput( 'remove', textInput, { preventPost: true } );
     }
 } );

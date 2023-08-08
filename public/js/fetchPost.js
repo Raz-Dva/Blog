@@ -1,4 +1,5 @@
 export const fetchPost = ( btn, hint, tags, method ) => {
+    console.log(tags)
     const form = $( '#form' );
     const formData = new FormData( form[ 0 ] );
     const topMarginHeader = 90;
@@ -6,7 +7,7 @@ export const fetchPost = ( btn, hint, tags, method ) => {
     formData.delete( 'tagsPost' );
     formData.append( 'tagsPost', JSON.stringify( tags ) );
 
-    for ( let pair of formData.entries() ) {
+    for ( const pair of formData.entries() ) {
         if ( !pair[ 1 ] && pair[ 0 ] !== 'oldImg' ) {
             $( `.form-control[name=${pair[ 0 ]}]` ).addClass( 'is-invalid' );
             const offsetTopInput = Math.round( $( '.is-invalid' ).offset().top ) - topMarginHeader;
@@ -28,7 +29,7 @@ export const fetchPost = ( btn, hint, tags, method ) => {
     } )
         .then( ( res ) => {
             if ( res.ok ) {
-                for ( let pair of formData.entries() ) {
+                for ( const pair of formData.entries() ) {
                     $( `.form-control[name=${pair[ 0 ]}]` ).val( '' );
                     $( '#img-post' ).attr( 'src', '' );
                 }

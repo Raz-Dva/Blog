@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    >
     <title>Nikki - Blog</title>
-    <link rel="icon" href="/public/img/core-img/favicon.ico" />
-    <link rel="stylesheet" href="/public/css/tagsinput.css" />
-    <link rel="stylesheet" href="/public/css/style.css" />
+    <link rel="icon" href="/public/img/core-img/favicon.ico">
+    <link rel="stylesheet" href="/public/css/tagsinput.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <script src="/public/js/jquery/jquery-2.2.4.min.js" defer></script>
+    <script src="/public/js/bootstrap/bootstrap.min.js" defer></script>
+    <script src="/public/js/bootstrap/tagsinput.js" defer></script>
+    <script src="/public/js/plugins/plugins.js" defer></script>
+    <script src="/public/js/staticHtml.js" defer></script>
+    <script type="module" src="/public/templates/update-post/update-post.js" defer></script>
   </head>
   <body>
     <header class="header-area" id="header"></header>
@@ -22,7 +28,9 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="/"><i class="fa fa-home"></i>Home</a>
+                  <a href="/">
+                    <i class="fa fa-home"></i>Home
+                  </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                   Update-post
@@ -41,7 +49,9 @@
               <h4>Update Post</h4>
               <!--  Form Area -->
               <div class="contact-form-area">
-                <div class="post-line">Post id: <span id="post-id">{post_id}</span></div>
+                <div class="post-line">
+                  Post id: <span id="post-id">{post_id}</span>
+                </div>
                 <form
                   action="/update-post/{id}"
                   method="post"
@@ -57,7 +67,7 @@
                       placeholder="Author"
                       value="{post_author}"
                       required
-                    />
+                    >
                   </div>
                   <div class="form-group">
                     <input
@@ -68,7 +78,7 @@
                       placeholder="Title"
                       value="{post_title}"
                       required
-                    />
+                    >
                   </div>
                   <div class="input_file">
                     <div class="form-group">
@@ -78,15 +88,16 @@
                           type="file"
                           id="input-file"
                           name="imgPost"
-                        />
+                        >
                       </label>
                       <input type="text" name="oldImg" hidden value="{old_path_img}">
                       <p class="title text-danger d-none" id="hint_err"></p>
-                      <div  style="overflow:hidden; width: 200px; height: 200px; position: relative" class="">
+                      <div style="overflow:hidden; width: 200px; height: 200px; position: relative" class="">
                         <img
                           id="img-post"
                           src="{post_img}"
-                        />
+                          alt=""
+                        >
                         <div id="loader"></div>
                       </div>
                     </div>
@@ -100,7 +111,7 @@
                       placeholder="Date"
                       value="{post_date}"
                       required
-                    />
+                    >
                   </div>
                   <div class="form-group">
                     <textarea
@@ -123,14 +134,14 @@
                       type="text"
                       name="tagsPost"
                       value="{post_tags}"
-                      data-role="tagsinput"/>
+                      data-role="tagsinput">
                   </div>
                 </form>
                 <button id="btn_send" class="btn btn-send nikki-btn mt-15">
                   Send
                 </button>
                 <p class="title text-success d-none" id="hint_successes"></p>
-                <br/>
+                <br>
               </div>
             </div>
           </div>
@@ -138,11 +149,5 @@
       </div>
     </section>
     <footer class="footer-area" id="footer"></footer>
-    <script src="/public/js/jquery/jquery-2.2.4.min.js"></script>
-    <script src="/public/js/bootstrap/bootstrap.min.js"></script>
-    <script src="/public/js/bootstrap/tagsinput.js"></script>
-    <script src="/public/js/plugins/plugins.js"></script>
-    <script src="/public/js/staticHtml.js"></script>
-    <script type="module" src="/public/templates/update-post/update-post.js"></script>
   </body>
 </html>

@@ -2,7 +2,7 @@ import formatDate from '../assets/formatDate.js';
 
 export default class RenderHTML {
     indexHtml = {};
-    noImageLocalPath = '../public/img/blog-img/no-image.jpg';
+    noImageLocalPath = '/public/img/blog-img/no-image.jpg';
 
     constructor() {
         this.categories = '';
@@ -33,10 +33,10 @@ export default class RenderHTML {
     }
 
     getCategories( post ) {
-        let categories = post.categories;
+        const categories = post.categories;
         const categoriesAmount = categories.length;
         for ( let i = 0; i < categoriesAmount; i++ ) {
-            let categoryName = categories[ i ];
+            const categoryName = categories[ i ];
             if ( this.Set.has( categoryName ) ) {
                 this.offset++;
             } else {
