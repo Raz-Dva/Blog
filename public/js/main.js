@@ -64,11 +64,12 @@ const rendering = () => {
             script.src = '/public/js/staticHtml.js';
             body.appendChild( script );
             $( '.remove_post' ).click( function() {
-                const question = confirm( 'Are you sure want to delete this post?' );
-                if ( question ) {
+                const isDelete = confirm( 'Are you sure want to delete this post?' );
+                if ( isDelete ) {
                     const postId = $( this ).attr( 'data-id' );
+                    $( this ).nextAll('#loader:first').css('display', 'flex');
                     ArtApi.remove( postId ).then( ( post ) => {
-                        articles = articles.filter( function( item ) {
+                        articles = articles.filter( ( item ) => {
                             if ( item._id !== post._id ) {
                                 renderer.getCategories( item );
                             } else {

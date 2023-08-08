@@ -62,6 +62,7 @@ export default class RenderHTML {
                                     alt=""
                                   />
                                 </a>
+                                <div id="loader" class="img-post-loader"></div>
                               </div>
                               <div class="post-content">
                                 <p class="post-date">${postData.date}</p>

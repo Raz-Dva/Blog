@@ -5,9 +5,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    padding-top: 75px;
-    padding-left: 75px;
+    justify-content: center;
+    align-items: center;
     background-color: #fff;
+    display: flex;
 }
 
 #loader:before {
@@ -20,6 +21,10 @@
     width: 60px;
     height: 60px;
     animation: spin 2s linear infinite;
+}
+
+#loader.img-post-loader {
+    display: none;
 }
 
 @keyframes spin {
