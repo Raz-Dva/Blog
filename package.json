@@ -29,8 +29,9 @@
   "devDependencies": {
     "@html-eslint/eslint-plugin": "^0.19.1",
     "@html-eslint/parser": "^0.19.1",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.9",
     "eslint": "^8.45.0",
-    "eslint-config-jquery": "^3.0.0",
     "eslint-plugin-html": "^7.1.0",
     "nodemon": "^2.0.14"
   }

@@ -1,12 +1,12 @@
 import formatDate from '../assets/formatDate.js';
 
-export default class RenderHTML {
+export default class HandlerPost {
     indexHtml = {};
     noImageLocalPath = '/public/img/blog-img/no-image.jpg';
 
     constructor() {
         this.categories = '';
-        this.randomPost = Math.floor( Math.random() * 4 );
+        this.randomPost = Math.floor(Math.random() * 4);
         this.Set = new Set();
         this.offset = 0;
         this.indexHtml.cards = '';
@@ -18,35 +18,35 @@ export default class RenderHTML {
                       </div>`;
     }
 
-    getDataPost( post ) {
+    getDataPost(post) {
         const dataPost = {};
-        if ( typeof post.text === 'string' && post.text.length > 150 ) {
-            dataPost.text = post.text.substr( 0, 150 ) + '...';
+        if (typeof post.text === 'string' && post.text.length > 150) {
+            dataPost.text = post.text.substr(0, 150) + '...';
         } else {
             dataPost.text = post.text;
         }
 
-        dataPost.date = formatDate( post.date );
+        dataPost.date = formatDate(post.date);
         dataPost.imgPath = post?.imgURL ? post.imgURL : this.noImageLocalPath;
-        dataPost.categories = post.categories.join( '/' );
+        dataPost.categories = post.categories.join('/');
         return dataPost;
     }
 
-    getCategories( post ) {
+    getCategories(post) {
         const categories = post.categories;
-        const categoriesAmount = categories.length;
-        for ( let i = 0; i < categoriesAmount; i++ ) {
+
+        for (let i = 0; i < categories.length; i++) {
             const categoryName = categories[ i ];
-            if ( this.Set.has( categoryName ) ) {
+            if (this.Set.has(categoryName)) {
                 this.offset++;
             } else {
-                this.Set.add( categoryName );
+                this.Set.add(categoryName);
                 this.indexHtml.categories += `<li><a href="/categories/:${categoryName}">${categoryName}</a></li>`;
             }
         }
     }
 
-    getCards( post, postData ) {
+    getCards(post, postData) {
         this.indexHtml.cards += `<div class="col-12 col-sm-6 card-post" data-id="${post._id}">
                             <div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
@@ -78,7 +78,7 @@ export default class RenderHTML {
                           </div>`;
     }
 
-    showRandomPost( post, postData ) {
+    showRandomPost(post, postData) {
         this.indexHtml.featuredPost = `<div class="featured-post-area mb-50">
                                 <div class="post-thumbnail mb-30">
                                   <a href="/single-post/${post._id}"
@@ -99,7 +99,7 @@ export default class RenderHTML {
                               </div>`;
     }
 
-    getSlider( post, postData ) {
+    getSlider(post, postData) {
         this.indexHtml.slider += `<div class="single-hero-post d-flex flex-wrap">
                             <div
                               class="slide-post-thumbnail h-100 bg-img"
@@ -134,5 +134,34 @@ export default class RenderHTML {
                               </div>
                             </div>
                           </div>`;
+    }
+
+    deletePost(btnDelete, api, articles) {
+        const isDelete = confirm('Are you sure want to delete this post?');
+        if (isDelete) {
+            const postId = btnDelete.attr('data-id');
+            btnDelete.nextAll('#loader:first').css('display', 'flex');
+            api.DELETE(postId).then((post) => {
+                btnDelete.nextAll('#loader:first').css('display', 'none');
+
+                if (!post) return;
+
+                articles = articles.filter((item) => {
+                    if (item._id !== post._id) {
+                        this.getCategories(item);
+                    } else {
+                        $('.card-post').remove(`div[data-id='${postId}']`);
+                        if (articles.length <= 4) {
+                            $('#list-arts')[ 0 ].innerHTML = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
+                        }
+                    }
+                    return item._id !== post._id;
+                });
+                $('#block-tags')[ 0 ].innerHTML = this.indexHtml.categories; 
+                alert(`Article with id ${post._id} was removed`)
+            });
+        }
+        this.Set = new Set();
+        this.indexHtml.categories = '';
     }
 }

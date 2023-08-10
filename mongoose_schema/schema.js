@@ -1,4 +1,3 @@
-// const mongoose = require("mongoose");
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
@@ -10,7 +9,7 @@ const articleScheme = new Schema({
     title: {
         type: String,
         reuqire: true,
-        default: "NoName"
+        default: 'NoName'
     },
     text: {
         type: String,
@@ -28,7 +27,7 @@ const articleScheme = new Schema({
         type: String
     },
     imgURL: {
-      type: String
+        type: String
     }
 });
 

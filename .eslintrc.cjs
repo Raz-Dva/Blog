@@ -33,6 +33,8 @@ module.exports = {
         "prefer-const": ["error", {
             "destructuring": "any",
             "ignoreReadBeforeAssign": false
-        }]
+        }],
+        'no-var': 'error',
+        'space-in-parens': ['error', 'never']
     },
 }

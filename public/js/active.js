@@ -1,25 +1,25 @@
-( function( $ ) {
+(function($) {
     'use strict';
 
-    const browserWindow = $( window );
+    const browserWindow = $(window);
 
     // :: 1.0 Preloader Active Code
-    browserWindow.on( 'load', function() {
-        $( '.preloader' ).fadeOut( 'slow', function() {
-            $( this ).remove();
-        } );
-    } );
+    browserWindow.on('load', function() {
+        $('.preloader').fadeOut('slow', function() {
+            $(this).remove();
+        });
+    });
 
     // :: 2.0 Nav Active Code
-    if ( $.fn.classyNav ) {
-        $( '#nikkiNav' ).classyNav();
+    if ($.fn.classyNav) {
+        $('#nikkiNav').classyNav();
     }
 
     // :: 3.0 Sliders Active Code
-    if ( $.fn.owlCarousel ) {
-        var welcomeSlide = $( '.hero-post-slides' );
+    if ($.fn.owlCarousel) {
+        const welcomeSlide = $('.hero-post-slides');
 
-        welcomeSlide.owlCarousel( {
+        welcomeSlide.owlCarousel({
             items: 1,
             margin: 0,
             loop: true,
@@ -31,48 +31,48 @@
             smartSpeed: 500,
             animateIn: 'fadeIn',
             animateOut: 'fadeOut'
-        } );
+        });
 
-        welcomeSlide.on( 'changed.owl.carousel', function( event ) {
-            if ( !event.namespace || event.property.name !== 'position' ) {
+        welcomeSlide.on('changed.owl.carousel', function(event) {
+            if (!event.namespace || event.property.name !== 'position') {
                 return;
             }
-            $( '.page-count' ).html( event.relatedTarget.relative( event.item.index ) + 1 + '<span>' + '/' + event.item.count + '</span>' );
-        } );
+            $('.page-count').html(event.relatedTarget.relative(event.item.index) + 1 + '<span>' + '/' + event.item.count + '</span>');
+        });
 
-        welcomeSlide.on( 'translate.owl.carousel', function() {
-            var slideLayer = $( '[data-animation]' );
-            slideLayer.each( function() {
-                var animName = $( this ).data( 'animation' );
-                $( this ).removeClass( 'animated ' + animName ).css( 'opacity', '0' );
-            } );
-        } );
+        welcomeSlide.on('translate.owl.carousel', function() {
+            const slideLayer = $('[data-animation]');
+            slideLayer.each(function() {
+                const animName = $(this).data('animation');
+                $(this).removeClass('animated ' + animName).css('opacity', '0');
+            });
+        });
 
-        welcomeSlide.on( 'translated.owl.carousel', function() {
-            var slideLayer = welcomeSlide.find( '.owl-item.active' ).find( '[data-animation]' );
-            slideLayer.each( function() {
-                var animName = $( this ).data( 'animation' );
-                $( this ).addClass( 'animated ' + animName ).css( 'opacity', '1' );
-            } );
-        } );
+        welcomeSlide.on('translated.owl.carousel', function() {
+            const slideLayer = welcomeSlide.find('.owl-item.active').find('[data-animation]');
+            slideLayer.each(function() {
+                const animName = $(this).data('animation');
+                $(this).addClass('animated ' + animName).css('opacity', '1');
+            });
+        });
 
-        $( '[data-delay]' ).each( function() {
-            var animDel = $( this ).data( 'delay' );
-            $( this ).css( 'animation-delay', animDel );
-        } );
+        $('[data-delay]').each(function() {
+            const animDel = $(this).data('delay');
+            $(this).css('animation-delay', animDel);
+        });
 
-        $( '[data-duration]' ).each( function() {
-            var animDur = $( this ).data( 'duration' );
-            $( this ).css( 'animation-duration', animDur );
-        } );
+        $('[data-duration]').each(function() {
+            const animDur = $(this).data('duration');
+            $(this).css('animation-duration', animDur);
+        });
     }
 
     // :: 4.0 ScrollUp Active Code
-    if ( $.fn.scrollUp ) {
-        browserWindow.scrollUp( {
+    if ($.fn.scrollUp) {
+        browserWindow.scrollUp({
             scrollSpeed: 300,
             scrollText: '<i class="fa fa-angle-up"></i>'
-        } );
+        });
     }
 
     // :: 5.0 CounterUp Active Code
@@ -84,10 +84,10 @@
     // }
 
     // :: 6.0 Sticky Active Code
-    if ( $.fn.sticky ) {
-        $( '.nikki-main-menu' ).sticky( {
+    if ($.fn.sticky) {
+        $('.nikki-main-menu').sticky({
             topSpacing: 0
-        } );
+        });
     }
 
     // :: 7.0 Tooltip Active Code
@@ -96,21 +96,21 @@
     // }
 
     // :: 8.0 ScrollDown Active Code
-    $( '#scrollDown' ).on( 'click', function() {
-        $( 'html, body' ).animate( {
-            scrollTop: $( '#about' ).offset().top - 85
-        }, 1500 );
-    } );
+    $('#scrollDown').on('click', function() {
+        $('html, body').animate({
+            scrollTop: $('#about').offset().top - 85
+        }, 1500);
+    });
 
     // :: 9.0 prevent default a click
-    $( 'a[href="#"]' ).on( 'click', function( $ ) {
+    $('a[href="#"]').on('click', function($) {
         $.preventDefault();
-    } );
+    });
 
     // :: 10.0 wow Active Code
-    if ( browserWindow.width() > 767 ) {
+    if (browserWindow.width() > 767) {
         // eslint-disable-next-line no-undef
         new WOW().init();
     }
 
-} )( jQuery );
+})(jQuery);

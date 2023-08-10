@@ -1,20 +1,20 @@
 import formatDate from '../assets/formatDate.js';
 
-const updatePosts = ( id ) => {
-    fetch( `/post/${id}`, { method: 'get', cache: 'reload' } )
-        .then( ( res ) => res.json() )
-        .then( ( post ) => {
+const updatePosts = (id) => {
+    fetch(`/post/${id}`, { method: 'get', cache: 'reload' })
+        .then((res) => res.json())
+        .then((post) => {
             const dataPost = {};
-            if ( typeof post.text === 'string' && post.text.length > 150 ) {
-                dataPost.text = post.text.substr( 0, 150 ) + '...';
+            if (typeof post.text === 'string' && post.text.length > 150) {
+                dataPost.text = post.text.substr(0, 150) + '...';
             } else {
                 dataPost.text = post.text;
             }
-            dataPost.date = formatDate( post.date );
+            dataPost.date = formatDate(post.date);
             dataPost.imgPath = post?.imgURL ? post.imgURL : '../public/img/blog-img/no-image.jpg';
-            dataPost.categories = post.categories.join( '/' );
+            dataPost.categories = post.categories.join('/');
 
-            $( `div[data-id='${id}']` ).html( `<div class="single-blog-post mb-50 overflow-hidden">
+            $(`div[data-id='${id}']`).html(`<div class="single-blog-post mb-50 overflow-hidden">
                               <div class="post-thumbnail">
                                 <a href="/update-post/${post._id}" class="edit_post"
                                   ><i class="fa fa-pencil"></i
@@ -39,25 +39,25 @@ const updatePosts = ( id ) => {
                               </div>
                               <hr />
                               <div class="author-comments"><span>by </span>${post.author}</div>
-                            </div>` );
-        } )
-        .catch( ( err ) => {
-            console.error( err );
-        } );
+                            </div>`);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 };
 
-window.addEventListener( 'pageshow', function( event ) {
-    const updatedPostId = localStorage.getItem( 'updatedPostId' );
-    const fromPageUpdate = localStorage.getItem( 'fromUrl' );
+window.addEventListener('pageshow', function(event) {
+    const updatedPostId = localStorage.getItem('updatedPostId');
+    const fromPageUpdate = localStorage.getItem('fromUrl');
 
-    localStorage.removeItem( 'updatedPostId' );
-    localStorage.removeItem( 'fromUrl' );
+    localStorage.removeItem('updatedPostId');
+    localStorage.removeItem('fromUrl');
 
-    var historyTraversal = event.persisted ||
-        ( typeof window.performance !== 'undefined' &&
-            window.performance.navigation.type === 2 );
-    if ( historyTraversal && updatedPostId && fromPageUpdate.startsWith( '/update-post/' ) ) {
-        updatePosts( updatedPostId );
+    const historyTraversal = event.persisted ||
+        (typeof window.performance !== 'undefined' &&
+            window.performance.navigation.type === 2);
+    if (historyTraversal && updatedPostId && fromPageUpdate.startsWith('/update-post/')) {
+        updatePosts(updatedPostId);
     }
-} );
+});
 
