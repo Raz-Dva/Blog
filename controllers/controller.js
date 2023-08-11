@@ -142,7 +142,7 @@ const getPostById = (req, res) => {
             .json(result);
     });
 };
-// eslint-disable-next-line no-unused-vars
+
 const getAddPostPage = (req, res) => {
     res.sendFile(`${clientPath}/public/templates/add-post/add-post.html`);
 };
@@ -258,9 +258,8 @@ const updatePostById = async(req, res) => {
 
 const deletePost = (req, res, next) => {
     Articles.findOneAndDelete({ _id: req.params.id }, (error, result) => {
-        if (error || result == null) {
-            console.log('Error delete ', error);
-            res.sendStatus(404);
+        if (error || result === null) {
+            res.status(404).send(`Error delete ${error?.message || error?.reason}`);
             next(error);
         }
         res.status(200).json(result);

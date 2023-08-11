@@ -2277,6 +2277,19 @@ blockquote.shortcodes {
   border-color: #dc3545;
   box-shadow: 0 0 3px 0 #dc3545;
 }
+
+.wrapper-alert {
+  position: fixed;
+  top: 0;
+  z-index: 101;
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.alert-notification {
+  display: none;
+}
 /* ======= The End ======= */
 
 /*# sourceMappingURL=style.css.map */

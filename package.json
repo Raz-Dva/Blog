@@ -13,6 +13,11 @@
     "start": "node index",
     "dev": "nodemon app"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && git add"
+    }
+  },
   "author": "Honcharov Ivan",
   "license": "ISC",
   "dependencies": {
@@ -33,6 +38,7 @@
     "@types/node": "^20.4.9",
     "eslint": "^8.45.0",
     "eslint-plugin-html": "^7.1.0",
+    "husky": "^8.0.3",
     "nodemon": "^2.0.14"
   }
 }

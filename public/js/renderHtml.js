@@ -1,4 +1,5 @@
 import formatDate from '../assets/formatDate.js';
+import Toast from './notificationToast.js'
 
 export default class HandlerPost {
     indexHtml = {};
@@ -157,8 +158,8 @@ export default class HandlerPost {
                     }
                     return item._id !== post._id;
                 });
-                $('#block-tags')[ 0 ].innerHTML = this.indexHtml.categories; 
-                alert(`Article with id ${post._id} was removed`)
+                $('#block-tags')[ 0 ].innerHTML = this.indexHtml.categories;
+                new Toast().showNotification('success', `Article with id ${post._id} was removed`)
             });
         }
         this.Set = new Set();

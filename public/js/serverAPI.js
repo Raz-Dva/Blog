@@ -1,10 +1,14 @@
+import Toast from './notificationToast.js'
+
 export default class APIMethods {
     static GET() {
-        return fetch('/articles', { method: 'get' })
+        return fetch('/articles', {method: 'get'})
             .then((res) => {
                 if (!res.ok) {
-                    alert(res.statusText);
-                    res.text().then((errorText) => alert(errorText));
+                    new Toast().showNotification('danger', `Error: ${res.statusText}`);
+                    res.text().then((text) => {
+                        new Toast().showNotification('danger', `Error: ${text}`)
+                    })
                     return;
                 }
                 return res.json();
@@ -14,11 +18,13 @@ export default class APIMethods {
             });
     }
     static DELETE(id) {
-        return fetch(`delete/${id}`, { method: 'delete' })
+        return fetch(`delete/${id}`, {method: 'delete'})
             .then((res) => {
                 if (!res.ok) {
-                    alert(res.statusText);
-                    res.text().then((errorText) => alert(errorText));
+                    new Toast().showNotification('danger', `Error: ${res.statusText}`);
+                    res.text().then((text) => {
+                        new Toast().showNotification('danger', `Error: ${text}`)
+                    });
                     return;
                 }
                 return res.json();

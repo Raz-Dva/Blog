@@ -1,5 +1,6 @@
 import { validImgPost } from '/public/js/validImgPost.js';
 import { fetchPost } from '/public/js/fetchPost.js';
+import Toast from '../../js/notificationToast.js';
 
 const inputFile = $('#input-file');
 
@@ -24,6 +25,8 @@ tagsInput.on('beforeItemAdd', () => {
 validImgPost(inputFile, previewer, hintError, btnSend);
 btnSend.click((e) => {
     e.preventDefault();
-    fetchPost(btnSend, hintSuccesses, tagsArr, 'POST');
+    fetchPost(btnSend, hintSuccesses, tagsArr, 'POST')
+        .then((responseText) => new Toast().showNotification('success', responseText))
+        .catch((responseText) => new Toast().showNotification('danger', responseText))
 });
 

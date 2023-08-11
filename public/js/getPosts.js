@@ -11,19 +11,20 @@ const $posts = $('#list-arts')[ 0 ],
 
 
 APIMethods.GET().then((res) => {
-    articles = res.concat(); // []
+    if (!res) return;
+    articles = res;
     articles.forEach((item, index) => {
-        const dataPost = handlerPost.getDataPost(item);  // prepeare data post
-        handlerPost.getCategories(item);  // set categories indexHtml.categories
+        const dataPost = handlerPost.getDataPost(item);
+        handlerPost.getCategories(item);
         if (handlerPost.randomPost === index) {
-            handlerPost.showRandomPost(item, dataPost); // add html random post
+            handlerPost.showRandomPost(item, dataPost);
         }
         if (index < 3) {
-            handlerPost.getSlider(item, dataPost); // concatin sliders indexHtml.slider
+            handlerPost.getSlider(item, dataPost);
             handlerPost.indexHtml.noPosts = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
         } else {
             handlerPost.indexHtml.noPosts = '';
-            handlerPost.getCards(item, dataPost); // prepear cards (concatin) indexHtml.cards
+            handlerPost.getCards(item, dataPost);
         }
     });
     $featuredPost.innerHTML = handlerPost.indexHtml.featuredPost;
