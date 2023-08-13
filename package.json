@@ -19,9 +19,7 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint"
-    ]
+    "*.js": "./node_modules/.bin/eslint"
   },
   "author": "Honcharov Ivan",
   "license": "ISC",
