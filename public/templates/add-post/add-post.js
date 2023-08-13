@@ -29,4 +29,3 @@ btnSend.click((e) => {
         .then((responseText) => new Toast().showNotification('success', responseText))
         .catch((responseText) => new Toast().showNotification('danger', responseText))
 });
-
