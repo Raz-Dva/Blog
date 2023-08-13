@@ -15,8 +15,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo 'Running pre-commit hook... ++++++++++' && npm run lint && git add"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint"
+    ]
   },
   "author": "Honcharov Ivan",
   "license": "ISC",
