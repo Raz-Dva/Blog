@@ -30,4 +30,3 @@ btnSend.click((e) => {
         .catch((responseText) => new Toast().showNotification('danger', responseText))
 });
 
-

@@ -1,5 +1,6 @@
 import Toast from '../js/notificationToast.js'
 
+
 export const fetchPost = (btn, hint, tags, method) => {
     return new Promise((resolve, reject) => {
         const tagsCollection = tags?.itemsArray ? tags.itemsArray : tags;
