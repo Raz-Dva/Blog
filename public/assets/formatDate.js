@@ -11,5 +11,6 @@ export default function formatDate(d) {
         day = '0' + day;
     }
 
-    return  [ year, month, day ].join('-');
+    return  [year, month, day].join('-');
 }
+
