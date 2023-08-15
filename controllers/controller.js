@@ -7,6 +7,7 @@ import multer from 'multer';
 import { s3PutObject } from '../s3-bucket/s3.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import generateCardPost from './templates/generate-card-post.js';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ multer({
 
 app.use('/public', express.static(__dirname + '/public'));
 
-const articles = (req, res, next) => {
+const getAllPosts = (req, res, next) => {
     Articles.find({}, (error, result) => {
         if (error) {
             res.status(400).send('Articles find error ');
@@ -34,18 +35,19 @@ const articles = (req, res, next) => {
     });
 };
 
-const categoryId = (req, res, next) => {
+const getPostsByQuery = (req, res, next) => {
     fs.readFile(
         `${clientPath}/public/templates/categories/categories.html`,
         'utf8',
         (error, data) => {
             if (error) {
-                console.log('Error read file categories.html ' + error);
-                return res.status(400)
-                    .send('<h1>Error read file categories.html</h1>');
+                console.log('Error read file categories.html ', error);
+                res.status(400).send('<h1>Error read file categories.html</h1>');
+                return next(error);
             }
             const tag = (req.params.id).substring(1);
-            Articles.find({ categories: { $all: [ tag ] } }, (error, result) => {
+
+            Articles.find({ categories: { $all: [tag] }}, (error, result) => {
                 if (error) {
                     console.log(error.stack);
                     next(error);
@@ -61,38 +63,18 @@ const categoryId = (req, res, next) => {
                             postText = post.text;
                         }
 
-                        return `<div class="single-latest-post d-flex">
-                                              <div class="post-thumb">
-                                              <a class="post-img" href="/single-post/${post._id}">
-                                                  <img
-                                                  src="${imagePath}"
-                                                  alt=""
-                                                  />
-                                              </a>
-                                              <p class="post-date">${formatDate(post.date)}</p>
-                                               <p class="post-date">${post.categories.join('/')}</p>
-                                              </div>
-                                              <div class="post-content">
-                                              <a href="/single-post/${post._id}" class="post-title">
-                                                  <h6>${post.title}</h6>
-                                              </a>
-                                              <p class="post-excerpt">${postText}</p>
-                                              <p class="post-author"><span>by</span> Colorlib</p>
-                                              </div>
-                                          </div>`;
+                        return generateCardPost(post, imagePath, postText);
                     }).join(' ');
 
                     data = data
                         .replace('{categoria}', tag)
                         .replace('{list_posts}', cardPost);
-                    res.status(200).type('text/html');
-                    res.send(data);
+                    res.status(200).type('text/html').send(data);
                 } else {
                     data = data
                         .replace('{categoria}', tag)
                         .replace('{list_posts}', '<h2> No more posts </h2>');
-                    res.status(200).type('text/html');
-                    res.send(data);
+                    res.status(200).type('text/html').send(data);
                 }
             });
         });
@@ -105,9 +87,10 @@ const singlePost = (req, res, next) => {
         (error, data) => {
             if (error) {
                 console.log('Error read file single-post.html ' + error);
-                return res.status(400)
+                res.status(400)
                     .type('text/html')
                     .send('<h1>Error read file single-post.html</h1>');
+                return next(error)
             }
             Articles.findById(req.params.id, (error, result) => {
                 if (error) {
@@ -143,8 +126,13 @@ const getPostById = (req, res) => {
     });
 };
 
-const getAddPostPage = (req, res) => {
-    res.sendFile(`${clientPath}/public/templates/add-post/add-post.html`);
+const getAddPostPage = (req, res, next) => {
+    res.sendFile(`${clientPath}/public/templates/add-post/add-post.html`, (error) => {
+        if (error) {
+            console.log('File not found add-post.html', error);
+            next(error);
+        }
+    });
 };
 
 const addPost = async(req, res) => {
@@ -189,16 +177,17 @@ const addPost = async(req, res) => {
     }
 };
 
-const getUpdatePost = (req, res, next) => {
+const getUpdatePostById = (req, res, next) => {
     fs.readFile(
         `${clientPath}/public/templates/update-post/update-post.html`,
         'utf8',
         (error, data) => {
             if (error) {
                 console.log('Error read file update-post.html ' + error);
-                return res.status(400)
+                res.status(400)
                     .type('text/html')
                     .send('<h1>Error read file update-postaf.html</h1>');
+                return next(error)
             }
             Articles.findById(req.params.id, (error, result) => {
                 if (error) {
@@ -256,6 +245,15 @@ const updatePostById = async(req, res) => {
     });
 };
 
+const editPosts = (req, res, next) => {
+    res.sendFile(`${clientPath}/public/templates/posts-editor/posts-editor.html`, (error) => {
+        if(error) {
+            console.log('File not found posts-editor.html', error);
+            next(error);
+        }
+    })
+}
+
 const deletePost = (req, res, next) => {
     Articles.findOneAndDelete({ _id: req.params.id }, (error, result) => {
         if (error || result === null) {
@@ -267,14 +265,15 @@ const deletePost = (req, res, next) => {
 };
 
 export default {
-    articles,
-    categoryId,
+    getAllPosts,
+    getPostsByQuery,
     singlePost,
     getPostById,
     getAddPostPage,
     addPost,
-    getUpdatePostId: getUpdatePost,
-    updatePostId: updatePostById,
+    getUpdatePostById,
+    updatePostById,
+    editPosts,
     deletePost
 };
 

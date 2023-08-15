@@ -1194,7 +1194,6 @@ img {
 
 .remove_post,
 .edit_post {
-  background: transparent;
   cursor: pointer;
   border-width: 0;
   visibility: hidden;
@@ -1208,9 +1207,11 @@ img {
 }
 .remove_post {
   right: 0;
+  left: auto;
 }
 .edit_post {
   left: 0;
+  right: auto;
 }
 
 .remove_post .fa,
@@ -1219,6 +1220,12 @@ img {
   padding: 10px;
   color: #585858;
 }
+.editable_post .edit_post,
+.editable_post .remove_post {
+  visibility: visible;
+  opacity: 1;
+}
+
 .single-blog-post .post-thumbnail {
   position: relative;
   z-index: 1;
@@ -1734,6 +1741,7 @@ img {
   align-items: center;
   max-height: 115px;
   overflow: hidden;
+  position: relative;
 }
 .row-contents .post-sidebar-area {
   margin-top: 5px;

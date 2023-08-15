@@ -34,7 +34,10 @@ module.exports = {
             "destructuring": "any",
             "ignoreReadBeforeAssign": false
         }],
-        'no-var': 'error',
-        'space-in-parens': ['error', 'never']
+        "no-var": "error",
+        "space-in-parens": ["error", "never"],
+        "array-bracket-spacing": ["error", "never"],
+        "space-before-blocks": ["error", "always"],
+        'space-before-function-paren': ['error', 'never']
     },
 }

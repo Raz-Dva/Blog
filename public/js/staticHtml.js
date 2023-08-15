@@ -1,12 +1,16 @@
-window.addEventListener('pageshow', function () {
+window.addEventListener('pageshow', function() {
     localStorage.setItem('fromUrl', window.location.pathname);
 });
 
-fetch('/public/templates/footer.html', {method: 'get'})
+const footerFetch = fetch('/public/templates/footer.html', {method: 'get'})
     .then((res) => res.text())
-    .then((data) => $('#footer')[0].innerHTML = data);
+    .then((data) => $('#footer')[0].innerHTML = data)
+    .then(() => true);
 
-fetch('/public/templates/header.html', {method: 'get'})
+const headerFetch = fetch('/public/templates/header.html', {method: 'get'})
     .then((res) => res.text())
-    .then((data) => $('#header')[0].innerHTML = data);
+    .then((data) => $('#header')[0].innerHTML = data)
+    .then(() => true);
+
+export {footerFetch, headerFetch};
 

@@ -1,52 +1,41 @@
-import HandlerPost from './renderHtml.js';
-import APIMethods from './serverAPI.js';
+import handlerPost from './handlerPost.js';
+import apiMethods from './serverAPI.js';
 
-let articles = [];
-const handlerPost = new HandlerPost();
-const $posts = $('#list-arts')[ 0 ],
-    $categories = $('#block-tags')[ 0 ],
-    $slider = $('#wrap-slider')[ 0 ],
-    $featuredPost = $('#featured-post')[ 0 ],
-    $preloader = $('#preloader')[ 0 ];
+const $posts = $('#list-arts')[0],
+    $categories = $('#block-tags')[0],
+    $slider = $('#wrap-slider')[0],
+    $featuredPost = $('#featured-post')[0],
+    $preloader = $('#preloader')[0];
 
 
-APIMethods.GET().then((res) => {
-    if (!res) return;
-    articles = res;
-    articles.forEach((item, index) => {
-        const dataPost = handlerPost.getDataPost(item);
-        handlerPost.getCategories(item);
-        if (handlerPost.randomPost === index) {
-            handlerPost.showRandomPost(item, dataPost);
-        }
-        if (index < 3) {
-            handlerPost.getSlider(item, dataPost);
-            handlerPost.indexHtml.noPosts = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
-        } else {
-            handlerPost.indexHtml.noPosts = '';
-            handlerPost.getCards(item, dataPost);
-        }
+export default function() {
+    return apiMethods.GET().then((res) => {
+        if (!res) return;
+        handlerPost.articles = res;
+        handlerPost.articles.forEach((item, index) => {
+            const dataPost = handlerPost.getDataPost(item);
+            handlerPost.createCategories(item);
+            if (handlerPost.randomPost === index) {
+                handlerPost.showRandomPost(item, dataPost);
+            }
+            if (index < 3) {
+                handlerPost.createSliders(item, dataPost);
+                handlerPost.htmlTemplates.noPosts = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
+            } else {
+                handlerPost.htmlTemplates.noPosts = '';
+                handlerPost.createPostCards(item, dataPost);
+            }
+        });
+        $featuredPost.innerHTML = handlerPost.htmlTemplates.featuredPost;
+        $categories.innerHTML = handlerPost.htmlTemplates.categories;
+        $posts.innerHTML = handlerPost.htmlTemplates.noPosts + handlerPost.htmlTemplates.cards;
+        $preloader.style.display = 'none';
+        $slider.innerHTML = handlerPost.htmlTemplates.slider;
+        handlerPost.htmlTemplates.categories = '';
+        handlerPost.htmlTemplates.cards = '';
+        handlerPost.htmlTemplates.slider = '';
+        handlerPost.Set = new Set();
     });
-    $featuredPost.innerHTML = handlerPost.indexHtml.featuredPost;
-    $categories.innerHTML = handlerPost.indexHtml.categories;
-    $posts.innerHTML = handlerPost.indexHtml.noPosts + handlerPost.indexHtml.cards;
-    $preloader.style.display = 'none';
-    $slider.innerHTML = handlerPost.indexHtml.slider;
-    handlerPost.indexHtml.categories = '';
-    handlerPost.indexHtml.cards = '';
-    handlerPost.indexHtml.slider = '';
-    handlerPost.Set = new Set();
-
-    $('.remove_post').click(function () {
-        handlerPost.deletePost($(this), APIMethods, articles)
-    });
-})
-    .then(() => {
-        const script = document.createElement('script');
-        const body = $('body')[0];
-        script.type = 'text/javascript';
-        script.src = '/public/js/active.js';
-        body.appendChild(script);
-    });
+}
 
 

@@ -1,4 +1,4 @@
-import Toast from './notificationToast.js'
+import Toast from './notificationToast.js';
 
 export default class APIMethods {
     static GET() {

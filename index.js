@@ -26,19 +26,26 @@ app.use('/', router);
 
 //---------------- error and 404
 // eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
+app.use((err,req,  res, next) => {
+    console.log('============================');
+    console.log(err.message)
     const isNotFound = ~err.message.indexOf('not found');
     const isCastError = ~err.message.indexOf('Cast to ObjectId failed');
-    if (err.message && (isNotFound || isCastError)) {
+    const isNoSuchFile = ~err.message.indexOf('ENOENT: no such file');
+
+    if (err.message && (isNotFound || isCastError || isNoSuchFile)) {
         return next(err);
     }
     console.log(err.stack);
     res.status(404).json({ Error: err.stack });
 });
 // eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+    if (err) res.status(404).type('text/html').send('<h2> Not found 404</h2>');
+});
+
 app.get('*', function(req, res) {
-    res.status(404).type('text/html');
-    res.send('<h2> Not found 404</h2>'); // add page not found
+    res.status(404).type('text/html').send('<h2> Not found 404</h2>');
 });
 
 // ------------  mongoose --------

@@ -1,21 +1,34 @@
-(function($) {
-    'use strict';
+import { footerFetch, headerFetch } from './staticHtml.js';
+import getPosts from './getPosts.js'
 
-    const browserWindow = $(window);
+const fetchHtml = [footerFetch, headerFetch];
+const browserWindow = $(window);
+const isMainPage = window.location.pathname === '/' || window.location.pathname === '/index.html';
 
-    // :: 1.0 Preloader Active Code
+if (isMainPage) {
+    fetchHtml.push(getPosts())
+}
+
+Promise.all(fetchHtml)
+    .then(() => {
+        if (isMainPage) {
+            activeMain();
+        }
+        active();
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+function activeMain() {
+    // Preloader Active Code
     browserWindow.on('load', function() {
         $('.preloader').fadeOut('slow', function() {
             $(this).remove();
         });
     });
 
-    // :: 2.0 Nav Active Code
-    if ($.fn.classyNav) {
-        $('#nikkiNav').classyNav();
-    }
-
-    // :: 3.0 Sliders Active Code
+    // Sliders Active Code
     if ($.fn.owlCarousel) {
         const welcomeSlide = $('.hero-post-slides');
 
@@ -24,7 +37,7 @@
             margin: 0,
             loop: true,
             nav: true,
-            navText: [ '<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>' ],
+            navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
             dots: true,
             autoplay: true,
             autoplayTimeout: 2000,
@@ -66,8 +79,17 @@
             $(this).css('animation-duration', animDur);
         });
     }
+}
 
-    // :: 4.0 ScrollUp Active Code
+function active() {
+    'use strict'
+
+    // Nav Active Code
+    if ($.fn.classyNav) {
+        $('#nikkiNav').classyNav();
+    }
+
+    // ScrollUp Active Code
     if ($.fn.scrollUp) {
         browserWindow.scrollUp({
             scrollSpeed: 300,
@@ -75,42 +97,21 @@
         });
     }
 
-    // :: 5.0 CounterUp Active Code
-    // if ($.fn.counterUp) {
-    //     $('.counter').counterUp({
-    //         delay: 10,
-    //         time: 2000
-    //     });
-    // }
-
-    // :: 6.0 Sticky Active Code
+    // Sticky Active Code
     if ($.fn.sticky) {
         $('.nikki-main-menu').sticky({
             topSpacing: 0
         });
     }
 
-    // :: 7.0 Tooltip Active Code
-    // if ($.fn.tooltip) {
-    //     $('[data-toggle="tooltip"]').tooltip();
-    // }
-
-    // :: 8.0 ScrollDown Active Code
-    $('#scrollDown').on('click', function() {
-        $('html, body').animate({
-            scrollTop: $('#about').offset().top - 85
-        }, 1500);
-    });
-
-    // :: 9.0 prevent default a click
+    //  prevent default a click
     $('a[href="#"]').on('click', function($) {
         $.preventDefault();
     });
 
-    // :: 10.0 wow Active Code
+    //  wow Active Code
     if (browserWindow.width() > 767) {
         // eslint-disable-next-line no-undef
         new WOW().init();
     }
-
-})(jQuery);
+}
