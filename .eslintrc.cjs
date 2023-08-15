@@ -1,8 +1,8 @@
 module.exports = {
     ignorePatterns: [
-        "public/js/bootstrap/**/*",
-        "public/js/jquery/**/*",
-        "public/js/plugins/**/*",
+        "public/js/bootstrap",
+        "public/js/jquery",
+        "public/js/plugins",
     ],
     env: {
         browser: true,
@@ -38,6 +38,6 @@ module.exports = {
         "space-in-parens": ["error", "never"],
         "array-bracket-spacing": ["error", "never"],
         "space-before-blocks": ["error", "always"],
-        'space-before-function-paren': ['error', 'never']
+        "space-before-function-paren": ["error", "never"]
     },
 }
