@@ -1,6 +1,6 @@
 import handlerPost from '../../js/handlerPost.js';
 
-const $categories = $('#block-tags')[ 0 ];
+const $categories = $('#block-tags')[0];
 
 fetch('/articles', { method: 'get' })
     .then((res) => {

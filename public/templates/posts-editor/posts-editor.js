@@ -1,8 +1,8 @@
 import apiMethods from '../../js/serverAPI.js';
 import handlerPost from '../../js/handlerPost.js';
 
-const $categories = $('#block-tags')[ 0 ],
-    $posts = $('#block-posts')[ 0 ];
+const $categories = $('#block-tags')[0],
+    $posts = $('#block-posts')[0];
 
 apiMethods.GET().then((res) => {
     if (!res) return;
@@ -24,4 +24,3 @@ apiMethods.GET().then((res) => {
         handlerPost.deletePost($(this))
     });
 });
-

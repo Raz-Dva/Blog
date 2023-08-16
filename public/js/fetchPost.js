@@ -2,22 +2,22 @@ export const fetchPost = (btn, hint, tags, method) => {
     return new Promise((resolve, reject) => {
         const tagsCollection = tags?.itemsArray ? tags.itemsArray : tags;
         const form = $('#form');
-        const formData = new FormData(form[ 0 ]);
+        const formData = new FormData(form[0]);
         const topMarginHeader = 90;
 
         formData.delete('tagsPost');
         formData.append('tagsPost', JSON.stringify(tagsCollection));
 
         for (const pair of formData.entries()) {
-            if (!pair[ 1 ] && pair[ 0 ] !== 'oldImg') {
-                $(`.form-control[name=${pair[ 0 ]}]`).addClass('is-invalid');
+            if (!pair[1] && pair[0] !== 'oldImg') {
+                $(`.form-control[name=${pair[0]}]`).addClass('is-invalid');
                 const offsetTopInput = Math.round($('.is-invalid').offset().top) - topMarginHeader;
 
                 $('html, body').animate({ scrollTop: offsetTopInput }, 200);
                 return false;
 
             } else {
-                $(`.form-control[name=${pair[ 0 ]}]`).removeClass('is-invalid');
+                $(`.form-control[name=${pair[0]}]`).removeClass('is-invalid');
                 btn.html('Send').attr('disabled', false);
             }
         }
@@ -31,7 +31,7 @@ export const fetchPost = (btn, hint, tags, method) => {
             .then((res) => {
                 if (res.ok) {
                     for (const pair of formData.entries()) {
-                        $(`.form-control[name=${pair[ 0 ]}]`).val('');
+                        $(`.form-control[name=${pair[0]}]`).val('');
                         $('#img-post').attr('src', '');
                     }
                     res.text().then((text) => {

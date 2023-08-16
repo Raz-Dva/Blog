@@ -17,7 +17,7 @@ const btnSend = $('#btn_send'),
 
 tagsInput.on('beforeItemAdd', () => {
     if (tagsArr.length > 2) {
-        const textInput = tagsArr[ tagsArr.length - 1 ];
+        const textInput = tagsArr[tagsArr.length - 1];
         tagsInput.tagsinput('remove', textInput, { preventPost: true });
     }
 });

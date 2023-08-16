@@ -8,6 +8,7 @@ export default function generateEditCardTemplate(post, postData) {
                   <button data-id="${post._id}" class="remove_post">
                     <i class="fa fa-remove"></i>
                   </button>
+                  <div class="loader"></div>
                   <img
                     src="${postData.imgPath}"
                     alt=""

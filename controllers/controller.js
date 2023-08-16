@@ -47,7 +47,7 @@ const getPostsByQuery = (req, res, next) => {
             }
             const tag = (req.params.id).substring(1);
 
-            Articles.find({ categories: { $all: [tag] }}, (error, result) => {
+            Articles.find({ categories: { $all: [tag] } }, (error, result) => {
                 if (error) {
                     console.log(error.stack);
                     next(error);
@@ -276,5 +276,3 @@ export default {
     editPosts,
     deletePost
 };
-
-

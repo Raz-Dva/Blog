@@ -44,7 +44,7 @@ class HandlerPost {
         const categories = post.categories;
 
         for (let i = 0; i < categories.length; i++) {
-            const categoryName = categories[ i ];
+            const categoryName = categories[i];
             if (this.Set.has(categoryName)) {
                 this.offset++;
             } else {
@@ -88,12 +88,12 @@ class HandlerPost {
                     } else {
                         $('.card-post').remove(`div[data-id='${postId}']`);
                         if (this.articles.length <= 4) {
-                            $('#list-arts')[ 0 ].innerHTML = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
+                            $('#list-arts')[0].innerHTML = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
                         }
                     }
                     return item._id !== post._id;
                 });
-                $('#block-tags')[ 0 ].innerHTML = this.htmlTemplates.categories;
+                $('#block-tags')[0].innerHTML = this.htmlTemplates.categories;
                 new Toast().showNotification('success', `Article with id ${post._id} was removed`)
             });
         }

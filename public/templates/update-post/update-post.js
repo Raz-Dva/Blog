@@ -22,7 +22,7 @@ previewer.one('load', () => {
 
 tagsInput.on('beforeItemAdd', () => {
     if (tagsArr.length > 2) {
-        const textInput = tagsArr[ tagsArr.length - 1 ];
+        const textInput = tagsArr[tagsArr.length - 1];
         tagsInput.tagsinput('remove', textInput, { preventPost: true });
     }
 });
@@ -35,4 +35,3 @@ btnSend.click(function(e) {
         .then((responseText) => new Toast().showNotification('success', responseText))
         .catch((responseText) => new Toast().showNotification('danger', responseText))
 });
-

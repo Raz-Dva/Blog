@@ -38,6 +38,10 @@ module.exports = {
         "space-in-parens": ["error", "never"],
         "array-bracket-spacing": ["error", "never"],
         "space-before-blocks": ["error", "always"],
-        "space-before-function-paren": ["error", "never"]
+        "space-before-function-paren": ["error", "never"],
+        "eol-last": ["error", "always"],
+        "object-curly-spacing": ["error", "always"],
+        "computed-property-spacing": ["error", "never"],
+        "no-multiple-empty-lines": ["error", { "max": 1 }],
     },
 }
