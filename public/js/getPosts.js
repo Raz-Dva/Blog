@@ -7,7 +7,6 @@ const $posts = $('#list-arts')[0],
     $featuredPost = $('#featured-post')[0],
     $preloader = $('#preloader')[0];
 
-
 export default function() {
     return apiMethods.GET().then((res) => {
         if (!res) return;
@@ -37,5 +36,3 @@ export default function() {
         handlerPost.Set = new Set();
     });
 }
-
-

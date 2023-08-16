@@ -48,5 +48,4 @@ export const validImgPost = (input, img, hint, btn) => {
             fileReader.readAsDataURL(file);
         }
     });
-
 };

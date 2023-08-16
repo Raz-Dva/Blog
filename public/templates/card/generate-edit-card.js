@@ -1,5 +1,5 @@
 export default function generateEditCardTemplate(post, postData) {
-    return `<div class="single-latest-post d-flex">
+    return `<div class="single-latest-post d-flex" id="${post._id}">
               <div class="post-thumb">
                 <div class="post-img editable_post">
                   <a href="/update-post/${post._id}" class="edit_post">
@@ -13,6 +13,7 @@ export default function generateEditCardTemplate(post, postData) {
                     src="${postData.imgPath}"
                     alt=""
                   />
+                  <div id="loader" class="img-post-loader"></div>
                 </div>
                 <p class="post-date">${postData.date}</p>
                 <p class="post-date">${postData.categories}</p>

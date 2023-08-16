@@ -86,7 +86,8 @@ class HandlerPost {
                     if (item._id !== post._id) {
                         this.createCategories(item);
                     } else {
-                        $('.card-post').remove(`div[data-id='${postId}']`);
+                        $(`#${postId}`).remove();
+
                         if (this.articles.length <= 4) {
                             $('#list-arts')[0].innerHTML = '<div class="col-12 col-sm-6"><h2> No more posts </h2></div>';
                         }

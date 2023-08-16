@@ -63,5 +63,3 @@ mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_P
         console.log('Mongoose connection successful');
     });
 });
-
-

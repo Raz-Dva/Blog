@@ -5,11 +5,9 @@ window.addEventListener('pageshow', function() {
 const footerFetch = fetch('/public/templates/footer.html', { method: 'get' })
     .then((res) => res.text())
     .then((data) => $('#footer')[0].innerHTML = data)
-    .then(() => true);
 
 const headerFetch = fetch('/public/templates/header.html', { method: 'get' })
     .then((res) => res.text())
     .then((data) => $('#header')[0].innerHTML = data)
-    .then(() => true);
 
 export { footerFetch, headerFetch };
