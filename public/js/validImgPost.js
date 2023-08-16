@@ -2,6 +2,7 @@ export const validImgPost = (input, img, hint, btn) => {
     const validateImage = () => {
         const formData = new FormData();
         const file = input[ 0 ].files[ 0 ];
+        
         formData.append('Filedata', file);
         const t = file.type.split('/').pop().toLowerCase();
         if (
